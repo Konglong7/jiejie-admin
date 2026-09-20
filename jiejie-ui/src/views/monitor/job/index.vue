@@ -23,7 +23,7 @@
             </div>
           </n-card>
         </div>
-        <n-grid :cols="2" :x-gap="16" class="stats-charts">
+        <n-grid cols="1 m:2" responsive="screen" :x-gap="16" class="stats-charts">
           <n-gi>
             <n-card title="成功/失败比例" size="small" :bordered="false" content-style="background: transparent">
               <div ref="pieChartRef" class="chart-box"></div>
@@ -492,5 +492,12 @@ onUnmounted(() => {
 
 .page-layout {
   min-height: calc(100vh - 160px);
+}
+
+@media (max-width: 768px) {
+  .stats-cards {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
 }
 </style>

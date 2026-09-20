@@ -88,7 +88,7 @@
             label-placement="top"
             require-mark-placement="right-hanging"
           >
-            <n-grid :cols="2" :x-gap="24">
+            <n-grid cols="1 s:2" responsive="screen" :x-gap="24">
               <n-gi>
                 <n-form-item label="昵称" path="nickname">
                   <n-input v-model:value="formData.nickname" placeholder="请输入昵称" />
@@ -469,5 +469,21 @@ onMounted(() => {
 
 :global(body.dark-theme) .profile-avatar {
   border-color: #3f3f46;
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 10px 8px !important;
+  }
+
+  .profile-layout {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .profile-left,
+  .profile-right {
+    width: 100% !important;
+  }
 }
 </style>

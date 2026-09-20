@@ -131,7 +131,7 @@
       <n-tabs type="line">
         <n-tab-pane name="basic" tab="基本信息">
           <n-form ref="editFormRef" :model="editForm" label-placement="left" label-width="100px">
-            <n-grid :cols="2" :x-gap="24">
+            <n-grid cols="1 s:2" responsive="screen" :x-gap="24">
               <n-form-item-gi label="表名">
                 <n-input v-model:value="editForm.tableName" disabled />
               </n-form-item-gi>

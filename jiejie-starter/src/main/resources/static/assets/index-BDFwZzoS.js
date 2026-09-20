@@ -1,0 +1,1 @@
+import{eG as e}from"./index-DAlWcQ_f.js";import{L as r,M as t}from"./vue-vendor-CP69822o.js";const c={};function n(o,s){return r(),t("div",null,"this is page")}const _=e(c,[["render",n]]);export{_ as default};

@@ -628,51 +628,230 @@ body.dark-theme {
 
 // ==================== 移动端全局适配 (微信 / 手机屏幕) ====================
 @media (max-width: 768px) {
-  // 数据表格横向平滑触控滚动，防止在微信内列被压扁
-  .n-data-table {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
-    width: 100% !important;
-
-    .n-data-table-table {
-      min-width: 600px;
-    }
+  // 1. 容器与卡片内边距精简，提升手机端信息展示密度
+  .page-container,
+  .profile-page {
+    padding: 10px 8px !important;
+    min-height: calc(100vh - 60px) !important;
   }
 
-  // 搜索栏和工具栏在移动端自动垂直流式排布
-  .search-form {
-    .n-form {
+  .n-card > .n-card__content,
+  .n-card > .n-card-header {
+    padding: 12px 10px !important;
+  }
+
+  .n-card > .n-card__footer {
+    padding: 10px !important;
+  }
+
+  // 2. 搜索栏与内联表单自动垂直流式排布
+  .search-form,
+  .query-form {
+    margin-bottom: 12px !important;
+
+    .n-form,
+    .n-form.n-form--inline {
+      display: flex !important;
       flex-direction: column !important;
       align-items: stretch !important;
 
       .n-form-item {
-        margin-bottom: 8px !important;
+        margin-right: 0 !important;
+        margin-bottom: 10px !important;
         width: 100% !important;
+
+        .n-form-item-blank {
+          width: 100% !important;
+        }
+
+        // 下拉框、输入框、选择器等铺满当前行
+        .n-input,
+        .n-select,
+        .n-date-picker,
+        .n-input-number,
+        .n-tree-select {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+      }
+
+      // 搜索/重置按钮容器均匀撑满
+      .n-form-item:last-child {
+        margin-bottom: 4px !important;
+
+        .n-space {
+          display: flex !important;
+          width: 100% !important;
+          gap: 8px !important;
+
+          > div {
+            flex: 1 !important;
+          }
+
+          .n-button {
+            width: 100% !important;
+          }
+        }
       }
     }
   }
 
-  .table-toolbar {
+  // 3. 表单左侧标签在移动端转为顶部对齐，防止挤压输入区域
+  .n-form-item.n-form-item--left-labelled {
+    display: flex !important;
     flex-direction: column !important;
     align-items: stretch !important;
-    gap: 10px;
 
-    .table-toolbar-left,
-    .table-toolbar-right {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    .n-form-item-label {
+      width: 100% !important;
+      justify-content: flex-start !important;
+      text-align: left !important;
+      padding-bottom: 4px !important;
+      min-height: auto !important;
+    }
+
+    .n-form-item-blank {
+      width: 100% !important;
+      min-width: 0 !important;
     }
   }
 
-  // 页面容器内边距精简，提升手机端信息展示密度
-  .page-container {
-    padding: 10px !important;
+  // 4. 工具栏按钮自适应换行
+  .table-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+
+    .n-space {
+      width: 100% !important;
+      flex-wrap: wrap !important;
+      gap: 8px !important;
+    }
+
+    .table-toolbar-left,
+    .table-toolbar-right {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      gap: 8px !important;
+      width: 100% !important;
+    }
   }
 
-  // 弹窗在手机端宽度自适应
+  // 5. 数据表格横向平滑触控滚动，防止在微信内列被压扁
+  .n-data-table {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+
+    .n-data-table-table {
+      min-width: 650px !important;
+    }
+
+    .n-data-table-td,
+    .n-data-table-th {
+      padding: 8px 6px !important;
+      font-size: 13px !important;
+    }
+  }
+
+  // 6. 分页器在移动端自动居中换行，隐藏跳转框
+  .pagination-container {
+    display: flex !important;
+    justify-content: center !important;
+    overflow-x: auto !important;
+    width: 100% !important;
+    padding: 8px 0 !important;
+  }
+
+  .n-pagination {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 6px !important;
+
+    .n-pagination-quick-jumper {
+      display: none !important;
+    }
+
+    .n-pagination-prefix {
+      font-size: 12px !important;
+      margin-right: 4px !important;
+    }
+  }
+
+  // 7. 弹窗/抽屉在移动端自适应视口大小与内部滚动
+  .n-modal-container {
+    padding: 8px !important;
+  }
+
   .n-modal:not(.n-modal--fullscreen) {
+    width: calc(100vw - 16px) !important;
+    max-width: calc(100vw - 16px) !important;
+    margin: 8px auto !important;
+    max-height: 92vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+
+    > .n-card__content {
+      overflow-y: auto !important;
+      max-height: calc(92vh - 120px) !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+  }
+
+  // 弹窗内的栅格表单在手机端转为单列
+  .modal-form .n-grid,
+  .n-modal .n-grid {
+    grid-template-columns: 1fr !important;
+
+    > div {
+      grid-column: span 1 / span 1 !important;
+    }
+  }
+
+  // 8. 左右分栏布局（部门树、岗位树、文件管理等）转为垂直单列堆叠
+  .dept-layout,
+  .post-layout,
+  .file-layout {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .dept-tree-card,
+  .post-tree-card,
+  .group-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    flex-shrink: 0 !important;
+  }
+
+  .dept-tree-wrapper,
+  .post-tree-wrapper {
+    height: auto !important;
+    max-height: 220px !important;
+    overflow-y: auto !important;
+  }
+
+  .group-card .n-card__content {
+    height: auto !important;
+    max-height: 220px !important;
+    overflow-y: auto !important;
+  }
+
+  .user-list-card,
+  .file-list-card {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  // 9. 气泡与下拉框在移动端尺寸限制
+  .n-popover {
     max-width: 95vw !important;
-    margin: 10px auto !important;
+  }
+
+  .message-popover {
+    width: 92vw !important;
+    max-width: 340px !important;
   }
 }

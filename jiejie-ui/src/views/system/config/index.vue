@@ -2027,4 +2027,31 @@ async function loadWechatMpMenu() {
     margin-top: 20px;
   }
 }
+
+@media (max-width: 768px) {
+  .sms-config-layout {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .sms-config-right {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .wechat-menu-layout {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .menu-config {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .phone-frame {
+    width: 100% !important;
+    max-width: 320px !important;
+  }
+}
 </style>

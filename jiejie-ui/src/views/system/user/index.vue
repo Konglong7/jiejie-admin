@@ -111,7 +111,7 @@
         label-width="80"
         class="modal-form"
       >
-        <n-grid :cols="2" :x-gap="16">
+        <n-grid cols="1 s:2" responsive="screen" :x-gap="16">
           <n-gi>
             <n-form-item label="用户名" path="username">
               <n-input v-model:value="formData.username" placeholder="请输入用户名" :disabled="!!formData.id" />

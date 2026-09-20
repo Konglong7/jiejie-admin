@@ -2,14 +2,18 @@
   <div class="page-container">
     <n-card 
       class="chat-card" 
-      :class="{ 'chat-fullscreen': isFullscreen }"
-      :style="{ width: cardWidth + 'px', height: cardHeight + 'px' }"
+      :class="{ 'chat-fullscreen': isFullscreen, 'chat-mobile': isMobile }"
+      :style="isMobile ? {} : { width: cardWidth + 'px', height: cardHeight + 'px' }"
     >
       <!-- 右下角拖拽调整大小 -->
-      <div class="card-resize-handle" @mousedown="startCardResize"></div>
+      <div v-if="!isMobile" class="card-resize-handle" @mousedown="startCardResize"></div>
       <div class="chat-wrapper">
         <!-- 左侧联系人列表 -->
-        <div class="chat-sidebar" :style="{ width: sidebarWidth + 'px' }">
+        <div 
+          class="chat-sidebar" 
+          :class="{ 'mobile-hidden': isMobile && (selectedUser || selectedGroup) }"
+          :style="isMobile ? {} : { width: sidebarWidth + 'px' }"
+        >
           <div class="sidebar-header">
             <n-input v-model:value="searchKeyword" placeholder="搜索" clearable size="small">
               <template #prefix>
@@ -97,16 +101,23 @@
         
         <!-- 可拖拽分隔条 -->
         <div 
+          v-if="!isMobile"
           class="resize-handle"
           @mousedown="startResize"
         ></div>
 
         <!-- 右侧聊天区域 -->
-        <div class="chat-main">
+        <div 
+          class="chat-main"
+          :class="{ 'mobile-hidden': isMobile && (!selectedUser && !selectedGroup) }"
+        >
           <!-- 私聊模式 -->
           <template v-if="selectedUser && !selectedGroup">
             <!-- 聊天头部 -->
             <div class="chat-header">
+              <n-button v-if="isMobile" quaternary circle size="small" @click="handleMobileBack" style="margin-right: 6px">
+                <template #icon><n-icon><ChevronBackOutline /></n-icon></template>
+              </n-button>
               <n-avatar round :src="selectedUser.avatar || undefined">
                 {{ selectedUser.nickname?.charAt(0) || 'U' }}
               </n-avatar>
@@ -289,6 +300,9 @@
           <template v-else-if="selectedGroup">
             <!-- 群聊头部 -->
             <div class="chat-header">
+              <n-button v-if="isMobile" quaternary circle size="small" @click="handleMobileBack" style="margin-right: 6px">
+                <template #icon><n-icon><ChevronBackOutline /></n-icon></template>
+              </n-button>
               <n-avatar round :style="{ background: '#18a058' }">
                 {{ selectedGroup.name?.charAt(0) || 'G' }}
               </n-avatar>
@@ -582,10 +596,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick, watch, h } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick, watch, h } from 'vue'
 import { useRoute } from 'vue-router'
 import { useMessage, NIcon, type UploadCustomRequestOptions } from 'naive-ui'
-import { SearchOutline, ImageOutline, HappyOutline, ExpandOutline, ContractOutline, FlashOutline, AddOutline, SettingsOutline, EllipsisVerticalOutline, AlertCircleOutline, PersonOutline, TrashOutline, BanOutline } from '@vicons/ionicons5'
+import { SearchOutline, ImageOutline, HappyOutline, ExpandOutline, ContractOutline, FlashOutline, AddOutline, SettingsOutline, EllipsisVerticalOutline, AlertCircleOutline, PersonOutline, TrashOutline, BanOutline, ChevronBackOutline } from '@vicons/ionicons5'
 import { chatApi, groupChatApi, type ChatMessage, type ChatUser, type ChatGroup, type ChatGroupMember, type ChatGroupMessage } from '@/api/message'
 import { fileApi } from '@/api/system'
 import { useUserStore } from '@/stores/user'
@@ -646,6 +660,16 @@ const showUserProfile = ref(false)
 const showClearConfirm = ref(false)
 const showBlockConfirm = ref(false)
 const messageSearchKeyword = ref('')
+
+// 移动端适配
+const isMobile = ref(false)
+function checkMobile() {
+  isMobile.value = window.innerWidth <= 768
+}
+function handleMobileBack() {
+  selectedUser.value = null
+  selectedGroup.value = null
+}
 
 // 侧边栏拖拽调整
 const sidebarWidth = ref(parseInt(localStorage.getItem('chat-sidebar-width') || '260'))
@@ -1508,6 +1532,13 @@ onMounted(async () => {
       }
     }
   }
+  // 初始化移动端检测
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
 })
 </script>
 
@@ -2166,4 +2197,35 @@ onMounted(async () => {
   font-size: 12px;
 }
 
+@media (max-width: 768px) {
+  .page-container {
+    height: calc(100vh - 65px) !important;
+    padding: 4px !important;
+  }
+
+  .chat-card {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    border-radius: 8px !important;
+  }
+
+  .chat-sidebar {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    border-right: none !important;
+  }
+
+  .chat-main {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .mobile-hidden {
+    display: none !important;
+  }
+}
 </style>

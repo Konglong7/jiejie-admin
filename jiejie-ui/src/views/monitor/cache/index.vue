@@ -2,7 +2,7 @@
   <div class="page-container">
     <!-- 统计图表 -->
     <div class="stats-section">
-      <n-grid :cols="2" :x-gap="16" :y-gap="16">
+      <n-grid cols="1 m:2" responsive="screen" :x-gap="16" :y-gap="16">
         <n-gi>
           <n-card title="内存使用" size="small" :bordered="false" content-style="background: transparent">
             <div ref="memoryChartRef" class="chart-box"></div>

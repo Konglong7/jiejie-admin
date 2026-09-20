@@ -802,4 +802,33 @@ body.dark-theme .terminal-title {
 body.dark-theme .terminal-modal-footer {
   border-top-color: #3f3f46;
 }
+
+@media (max-width: 768px) {
+  .toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .toolbar-left {
+    flex-direction: column !important;
+    width: 100% !important;
+
+    .n-input,
+    .n-select {
+      width: 100% !important;
+    }
+  }
+
+  .toolbar-right {
+    .n-button {
+      width: 100% !important;
+    }
+  }
+
+  .server-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
 </style>

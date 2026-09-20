@@ -67,7 +67,7 @@
         label-width="80"
         class="modal-form"
       >
-        <n-grid :cols="2" :x-gap="24">
+        <n-grid cols="1 s:2" responsive="screen" :x-gap="24">
           <n-gi>
             <n-form-item label="角色名称" path="name">
               <n-input v-model:value="formData.name" placeholder="请输入角色名称" />

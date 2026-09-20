@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-grid :cols="2" :x-gap="16" :y-gap="16">
+    <n-grid cols="1 m:2" responsive="screen" :x-gap="16" :y-gap="16">
       <n-gi>
         <n-card title="CPU信息">
           <n-descriptions :column="1" label-placement="left">
@@ -48,7 +48,7 @@
     </n-card>
 
     <n-card title="实时监控图表" style="margin-top: 16px">
-      <n-grid :cols="2" :x-gap="16">
+      <n-grid cols="1 m:2" responsive="screen" :x-gap="16" :y-gap="16">
         <n-gi>
           <div ref="cpuChartRef" style="height: 300px; width: 100%"></div>
         </n-gi>

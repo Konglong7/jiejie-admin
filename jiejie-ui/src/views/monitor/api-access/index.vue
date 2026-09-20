@@ -24,7 +24,7 @@
           </n-card>
         </div>
 
-        <n-grid :cols="2" :x-gap="16" class="stats-charts">
+        <n-grid cols="1 m:2" responsive="screen" :x-gap="16" class="stats-charts">
           <n-gi>
             <n-card title="请求方法分布" size="small" :bordered="false" content-style="background: transparent">
               <div ref="methodChartRef" class="chart-box"></div>
@@ -305,6 +305,13 @@ onUnmounted(() => {
     display: flex;
     justify-content: flex-end;
     margin-top: 12px;
+  }
+
+  @media (max-width: 768px) {
+    .stats-cards {
+      flex-direction: column !important;
+      gap: 8px !important;
+    }
   }
 }
 </style>

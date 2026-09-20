@@ -67,7 +67,7 @@
     <!-- 新增/编辑弹窗 -->
     <n-modal v-model:show="modalVisible" preset="card" :title="modalTitle" style="width: 800px">
       <n-form ref="formRef" :model="formData" :rules="formRules" label-placement="left" label-width="100px">
-        <n-grid :cols="2" :x-gap="24">
+        <n-grid cols="1 s:2" responsive="screen" :x-gap="24">
         <n-form-item-gi label="学号" path="studentNo">
           <n-input v-model:value="formData.studentNo" placeholder="请输入学号" />
         </n-form-item-gi>
