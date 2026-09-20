@@ -1879,25 +1879,67 @@ function adjustColor(hex: string, percent: number): string {
 
 /* ==================== 响应式 ==================== */
 @media (max-width: 768px) {
-  .style1-container {
-    flex-direction: column;
-    max-width: 400px;
+  .login-page {
+    padding: 8px 10px !important;
+    flex-direction: column !important;
+    min-height: 100dvh !important;
+    justify-content: center !important;
+  }
+
+  .login-container, .style1-container, .style2-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-shrink: 0 !important;
+    border-radius: 16px !important;
+    min-height: auto !important;
   }
 
   .login-banner {
-    padding: 32px;
-  }
-
-  .banner-title {
-    font-size: 24px;
-  }
-
-  .banner-features {
-    display: none;
+    display: none !important;
   }
 
   .login-form-wrapper {
-    padding: 32px;
+    width: 100% !important;
+    padding: 16px 14px !important;
+  }
+
+  .login-form {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .mobile-login-header {
+    margin-bottom: 10px !important;
+  }
+
+  .mobile-project-pill {
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .form-title {
+    font-size: 20px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .form-subtitle {
+    font-size: 12px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .n-form-item {
+    margin-bottom: 10px !important;
+  }
+
+  .demo-accounts-box {
+    margin-top: 10px !important;
+    padding: 8px 10px !important;
+  }
+
+  .demo-account-item {
+    padding: 4px 8px !important;
+    margin-bottom: 4px !important;
   }
 }
 
