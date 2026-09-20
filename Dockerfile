@@ -6,9 +6,10 @@ WORKDIR /app/jiejie-ui
 COPY jiejie-ui/package*.json ./
 RUN npm install
 
-# Build frontend to jiejie-starter/src/main/resources/static
+# Build frontend to jiejie-starter/src/main/resources/static & pre-compress with gzip -9
 COPY jiejie-ui/ ./
-RUN npm run build
+RUN npm run build && \
+    find ../jiejie-starter/src/main/resources/static/assets -type f \( -name "*.js" -o -name "*.css" \) -exec gzip -k -9 {} +
 
 # Stage 2: Build Backend (Maven + Eclipse Temurin 17)
 FROM maven:3.9-eclipse-temurin-17-alpine AS backend-builder

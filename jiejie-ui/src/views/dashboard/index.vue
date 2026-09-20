@@ -203,12 +203,15 @@ const userStore = useUserStore()
 
 const currentTime = ref('')
 const currentDate = ref('')
-const loading = ref(true)
-const overviewCollapsed = ref(false)
+const overviewCollapsed = ref(typeof window !== 'undefined' ? window.innerWidth <= 768 : false)
 const isMobile = ref(false)
 
 function checkMobile() {
-  isMobile.value = window.innerWidth <= 768
+  const mobile = window.innerWidth <= 768
+  if (!isMobile.value && mobile) {
+    overviewCollapsed.value = true
+  }
+  isMobile.value = mobile
 }
 
 function toggleOverviewCollapse() {

@@ -61,6 +61,23 @@
         </div>
         <div class="login-form-wrapper">
           <div class="login-form">
+            <!-- 移动端专属品牌顶部栏与项目解析入口 -->
+            <div class="mobile-login-header">
+              <div class="mobile-brand-box">
+                <img v-if="siteLogo" :src="siteLogo" class="mobile-brand-logo" alt="Logo" />
+                <div v-else class="mobile-brand-icon" :style="{ background: themeStore.primaryColor }">{{ siteName.charAt(0) }}</div>
+                <div class="mobile-brand-info">
+                  <div class="mobile-brand-name">{{ siteName }}</div>
+                  <div class="mobile-brand-desc">{{ siteDescription || '企业级敏捷开发管理平台' }}</div>
+                </div>
+              </div>
+              <div class="mobile-project-pill" @click="showProjectModal = true">
+                <span class="pill-dot">⚡</span>
+                <span class="pill-text">🎯 查看系统架构与核心痛点解析</span>
+                <span class="pill-arrow">›</span>
+              </div>
+            </div>
+
             <h2 class="form-title">欢迎回来</h2>
             <p class="form-subtitle">请输入您的账号信息登录系统</p>
             <n-form ref="formRef" :model="formData" :rules="rules" size="large" autocomplete="off">
@@ -190,6 +207,23 @@
         </div>
         <div class="login-form-wrapper">
           <div class="login-form">
+            <!-- 移动端专属品牌顶部栏与项目解析入口 -->
+            <div class="mobile-login-header">
+              <div class="mobile-brand-box">
+                <img v-if="siteLogo" :src="siteLogo" class="mobile-brand-logo" alt="Logo" />
+                <div v-else class="mobile-brand-icon" :style="{ background: themeStore.primaryColor }">{{ siteName.charAt(0) }}</div>
+                <div class="mobile-brand-info">
+                  <div class="mobile-brand-name">{{ siteName }}</div>
+                  <div class="mobile-brand-desc">{{ siteDescription || '企业级敏捷开发管理平台' }}</div>
+                </div>
+              </div>
+              <div class="mobile-project-pill" @click="showProjectModal = true">
+                <span class="pill-dot">⚡</span>
+                <span class="pill-text">🎯 查看系统架构与核心痛点解析</span>
+                <span class="pill-arrow">›</span>
+              </div>
+            </div>
+
             <h2 class="form-title">欢迎回来</h2>
             <p class="form-subtitle">请输入您的账号信息登录系统</p>
             <n-form ref="formRef" :model="formData" :rules="rules" size="large" autocomplete="off">
@@ -309,6 +343,23 @@
         </div>
         <div class="login-form-wrapper style3-form-glass">
           <div class="login-form">
+            <!-- 移动端专属品牌顶部栏与项目解析入口 -->
+            <div class="mobile-login-header">
+              <div class="mobile-brand-box">
+                <img v-if="siteLogo" :src="siteLogo" class="mobile-brand-logo" alt="Logo" />
+                <div v-else class="mobile-brand-icon" :style="{ background: themeStore.primaryColor }">{{ siteName.charAt(0) }}</div>
+                <div class="mobile-brand-info">
+                  <div class="mobile-brand-name">{{ siteName }}</div>
+                  <div class="mobile-brand-desc">{{ siteDescription || '企业级敏捷开发管理平台' }}</div>
+                </div>
+              </div>
+              <div class="mobile-project-pill" @click="showProjectModal = true">
+                <span class="pill-dot">⚡</span>
+                <span class="pill-text">🎯 查看系统架构与核心痛点解析</span>
+                <span class="pill-arrow">›</span>
+              </div>
+            </div>
+
             <h2 class="form-title">欢迎回来</h2>
             <p class="form-subtitle">请输入您的账号信息登录系统</p>
             <n-form ref="formRef" :model="formData" :rules="rules" size="large" autocomplete="off">
@@ -969,11 +1020,102 @@ function adjustColor(hex: string, percent: number): string {
   overflow: hidden;
 
   @media (max-width: 768px) {
+    min-height: 100dvh;
     height: auto;
-    min-height: 100vh;
-    align-items: flex-start;
-    overflow-y: auto;
-    padding: 12px;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 12px;
+  }
+}
+
+/* 移动端专属品牌顶部栏 */
+.mobile-login-header {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 18px;
+    width: 100%;
+
+    .mobile-brand-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mobile-brand-logo,
+    .mobile-brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .mobile-brand-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .mobile-brand-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      line-height: 1.2;
+    }
+
+    .mobile-brand-desc {
+      font-size: 11.5px;
+      color: #6B7280;
+    }
+
+    .mobile-project-pill {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(99, 102, 241, 0.12) 100%);
+      border: 1px solid rgba(79, 70, 229, 0.2);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:active {
+        background: rgba(79, 70, 229, 0.18);
+        transform: scale(0.99);
+      }
+
+      .pill-dot {
+        font-size: 13px;
+        margin-right: 6px;
+      }
+
+      .pill-text {
+        font-size: 12px;
+        font-weight: 600;
+        color: #4F46E5;
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .pill-arrow {
+        font-size: 14px;
+        color: #4F46E5;
+        font-weight: 700;
+        margin-left: 4px;
+      }
+    }
   }
 }
 
@@ -991,9 +1133,7 @@ function adjustColor(hex: string, percent: number): string {
   backdrop-filter: blur(10px);
 
   @media (max-width: 768px) {
-    top: 10px;
-    right: 10px;
-    padding: 4px;
+    display: none !important;
   }
 }
 
@@ -1058,8 +1198,11 @@ function adjustColor(hex: string, percent: number): string {
   @media (max-width: 768px) {
     flex-direction: column;
     min-height: auto;
-    border-radius: 16px;
-    margin: 40px auto 20px auto;
+    border-radius: 20px;
+    width: 100% !important;
+    max-width: 400px !important;
+    margin: 0 auto !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
   }
 }
 
@@ -1074,41 +1217,7 @@ function adjustColor(hex: string, percent: number): string {
   overflow: hidden;
 
   @media (max-width: 768px) {
-    padding: 24px 20px;
-    flex: none;
-
-    .banner-logo {
-      margin-bottom: 16px;
-      .logo-icon, .logo-img {
-        width: 38px;
-        height: 38px;
-        font-size: 20px;
-      }
-      .logo-text {
-        font-size: 20px;
-      }
-    }
-
-    .banner-title {
-      font-size: 20px;
-      margin-bottom: 8px;
-    }
-
-    .banner-desc {
-      font-size: 13px;
-      margin-bottom: 16px;
-    }
-
-    .banner-features {
-      gap: 10px;
-      .feature-item {
-        font-size: 13px;
-      }
-    }
-
-    .banner-project-action {
-      margin-top: 14px;
-    }
+    display: none !important;
   }
 }
 
@@ -1579,24 +1688,27 @@ function adjustColor(hex: string, percent: number): string {
   background: #ffffff;
 }
 
-/* 小屏幕保持全屏堆叠 */
-@media (max-width: 960px) {
+@media (max-width: 768px) {
   .style2-container {
     flex-direction: column;
-    overflow-y: auto;
+    width: 100% !important;
+    max-width: 400px !important;
+    min-height: auto !important;
+    border-radius: 20px !important;
     position: relative !important;
-    min-height: 100vh !important;
+    margin: 0 auto !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25) !important;
+    overflow: hidden !important;
   }
 
   .style2-container .login-banner {
-    flex: none;
-    min-height: auto;
-    padding: 32px 20px;
+    display: none !important;
   }
 
   .style2-container .login-form-wrapper {
-    flex: 1;
-    padding: 32px 20px;
+    flex: none !important;
+    padding: 24px 20px !important;
+    border-radius: 20px !important;
   }
 }
 
@@ -1941,33 +2053,96 @@ function adjustColor(hex: string, percent: number): string {
   transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
 
   @media (max-width: 768px) {
-    width: 95vw !important;
-    max-height: 88vh !important;
-    margin: 10px auto !important;
+    width: 94vw !important;
+    max-width: 94vw !important;
+    max-height: 86vh !important;
+    margin: 8px auto !important;
+    border-radius: 16px !important;
+
+    .n-card__content {
+      padding: 10px 12px !important;
+      max-height: 58vh !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
 
     .n-card-header {
       padding: 12px 14px !important;
       .n-card-header__main {
-        font-size: 14px !important;
+        font-size: 13px !important;
       }
     }
 
     .project-modal-body {
-      padding: 0 4px;
+      padding: 0;
     }
 
     .project-overview-hero {
       padding: 10px 12px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       .hero-desc {
-        font-size: 12px;
+        font-size: 11.5px;
+        line-height: 1.5;
+      }
+    }
+
+    .painpoints-grid {
+      grid-template-columns: 1fr !important;
+      gap: 8px !important;
+      margin-bottom: 10px !important;
+    }
+
+    .painpoint-card {
+      padding: 10px 12px;
+      gap: 6px;
+
+      .card-title-wrap h4 {
+        font-size: 12.5px;
+      }
+
+      .card-content {
+        font-size: 11.5px;
+        gap: 6px;
+      }
+    }
+
+    .tech-matrix-box {
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      .matrix-grid {
+        grid-template-columns: 1fr !important;
+        gap: 6px;
       }
     }
 
     .modal-accounts-flex .account-item {
       flex-wrap: wrap;
       gap: 6px;
-      padding: 8px 10px;
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+
+    .project-modal-footer {
+      flex-direction: column !important;
+      gap: 8px !important;
+      align-items: stretch !important;
+
+      .footer-tip {
+        display: none !important;
+      }
+
+      .footer-btns {
+        display: flex !important;
+        flex-direction: column-reverse !important;
+        width: 100% !important;
+        gap: 8px !important;
+
+        .n-button {
+          width: 100% !important;
+          height: 38px !important;
+          font-size: 13px !important;
+        }
+      }
     }
   }
 

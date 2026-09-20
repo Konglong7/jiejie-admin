@@ -18,7 +18,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           'vue-vendor': ['vue', 'vue-router', 'pinia', 'pinia-plugin-persistedstate'],
-          'naive-ui': ['naive-ui'],
           'echarts': ['echarts'],
           'xterm': ['@xterm/xterm', '@xterm/addon-fit']
         }

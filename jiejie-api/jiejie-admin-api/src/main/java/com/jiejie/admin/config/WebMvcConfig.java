@@ -32,11 +32,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 1. 针对 Vite 产物 (/assets/** 带内容 Hash)，配置 365 天不可变强缓存 (Cache-Control: public, max-age=31536000, immutable)
-        // 配合 Cloudflare CDN 边缘节点，将实现 HIT 秒级近邻分发
+        // 配合 EncodedResourceResolver 支持优先下发预压缩资源，极大降低传输时延与CPU负载
         registry.addResourceHandler("/assets/**")
                 .addResourceLocations("classpath:/static/assets/")
                 .setCacheControl(org.springframework.http.CacheControl.maxAge(365, java.util.concurrent.TimeUnit.DAYS).cachePublic().immutable())
-                .resourceChain(true);
+                .resourceChain(true)
+                .addResolver(new org.springframework.web.servlet.resource.EncodedResourceResolver());
 
         // 2. 针对普通静态图片、图标配置 7 天缓存
         registry.addResourceHandler("/favicon.ico", "/vite.svg", "/logo.svg")
