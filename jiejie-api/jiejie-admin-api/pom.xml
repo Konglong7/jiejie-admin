@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.jiejie</groupId>
+        <artifactId>jiejie-api</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>jiejie-admin-api</artifactId>
+    <packaging>jar</packaging>
+    <name>Jiejie Admin API</name>
+    <description>后台管理接口层 - Admin控制器</description>
+
+    <dependencies>
+        <!-- 认证模块 -->
+        <dependency>
+            <groupId>com.jiejie</groupId>
+            <artifactId>jiejie-auth</artifactId>
+        </dependency>
+        <!-- 业务模块 -->
+        <dependency>
+            <groupId>com.jiejie</groupId>
+            <artifactId>jiejie-system</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jiejie</groupId>
+            <artifactId>jiejie-crypto</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jiejie</groupId>
+            <artifactId>jiejie-file</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jiejie</groupId>
+            <artifactId>jiejie-gen</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jiejie</groupId>
+            <artifactId>jiejie-biz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jiejie</groupId>
+            <artifactId>jiejie-message</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jiejie</groupId>
+            <artifactId>jiejie-pay</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jiejie</groupId>
+            <artifactId>jiejie-sms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jiejie</groupId>
+            <artifactId>jiejie-job</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jiejie</groupId>
+            <artifactId>jiejie-workflow</artifactId>
+        </dependency>
+
+        <!-- WebSocket基础设施 -->
+        <dependency>
+            <groupId>com.jiejie</groupId>
+            <artifactId>jiejie-websocket</artifactId>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="mars-auth" />
+        <module name="jiejie-message" />
+        <module name="mars-crypto" />
+        <module name="jiejie-push" />
+        <module name="mars-wechat" />
+        <module name="mars-web-api" />
+        <module name="jiejie-job" />
+        <module name="mars-mail" />
+        <module name="mars-job" />
+        <module name="jiejie-app-api" />
+        <module name="jiejie-websocket" />
+        <module name="mars-system" />
+        <module name="jiejie-workflow" />
+        <module name="mars-biz" />
+        <module name="jiejie-file" />
+        <module name="mars-file" />
+        <module name="mars-gen" />
+        <module name="mars-oss" />
+        <module name="mars-app-api" />
+        <module name="jiejie-system" />
+        <module name="jiejie-wechat" />
+        <module name="mars-workflow" />
+        <module name="mars-redis" />
+        <module name="jiejie-mail" />
+        <module name="jiejie-auth" />
+        <module name="mars-websocket" />
+        <module name="mars-starter" />
+        <module name="jiejie-pay" />
+        <module name="mars-sms" />
+        <module name="jiejie-admin-api" />
+        <module name="mars-common" />
+        <module name="mars-social" />
+        <module name="jiejie-biz" />
+        <module name="mars-message" />
+        <module name="jiejie-redis" />
+        <module name="jiejie-social" />
+        <module name="mars-admin-api" />
+        <module name="jiejie-gen" />
+        <module name="mars-push" />
+        <module name="jiejie-db" />
+        <module name="jiejie-oss" />
+        <module name="jiejie-common" />
+        <module name="jiejie-starter" />
+        <module name="jiejie-sms" />
+        <module name="jiejie-web-api" />
+        <module name="mars-db" />
+        <module name="jiejie-crypto" />
+        <module name="mars-pay" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mars-mall" target="17" />
+      <module name="mars-test" target="17" />
+      <module name="mars-web" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="jiejie-admin" options="-parameters" />
+      <module name="jiejie-admin-api" options="-parameters" />
+      <module name="jiejie-api" options="-parameters" />
+      <module name="jiejie-app-api" options="-parameters" />
+      <module name="jiejie-auth" options="-parameters" />
+      <module name="jiejie-biz" options="-parameters" />
+      <module name="jiejie-common" options="-parameters" />
+      <module name="jiejie-core" options="-parameters" />
+      <module name="jiejie-crypto" options="-parameters" />
+      <module name="jiejie-db" options="-parameters" />
+      <module name="jiejie-file" options="-parameters" />
+      <module name="jiejie-gen" options="-parameters" />
+      <module name="jiejie-infra" options="-parameters" />
+      <module name="jiejie-job" options="-parameters" />
+      <module name="jiejie-mail" options="-parameters" />
+      <module name="jiejie-message" options="-parameters" />
+      <module name="jiejie-oss" options="-parameters" />
+      <module name="jiejie-pay" options="-parameters" />
+      <module name="jiejie-push" options="-parameters" />
+      <module name="jiejie-redis" options="-parameters" />
+      <module name="jiejie-sms" options="-parameters" />
+      <module name="jiejie-social" options="-parameters" />
+      <module name="jiejie-starter" options="-parameters" />
+      <module name="jiejie-system" options="-parameters" />
+      <module name="jiejie-web-api" options="-parameters" />
+      <module name="jiejie-websocket" options="-parameters" />
+      <module name="jiejie-wechat" options="-parameters" />
+      <module name="jiejie-workflow" options="-parameters" />
+      <module name="mars-admin" options="-parameters" />
+      <module name="mars-admin-api" options="-parameters" />
+      <module name="mars-api" options="-parameters" />
+      <module name="mars-app-api" options="-parameters" />
+      <module name="mars-auth" options="-parameters" />
+      <module name="mars-biz" options="-parameters" />
+      <module name="mars-common" options="-parameters" />
+      <module name="mars-core" options="-parameters" />
+      <module name="mars-crypto" options="-parameters" />
+      <module name="mars-db" options="-parameters" />
+      <module name="mars-file" options="-parameters" />
+      <module name="mars-gen" options="-parameters" />
+      <module name="mars-infra" options="-parameters" />
+      <module name="mars-job" options="-parameters" />
+      <module name="mars-mail" options="-parameters" />
+      <module name="mars-mall" options="-parameters" />
+      <module name="mars-message" options="-parameters" />
+      <module name="mars-oss" options="-parameters" />
+      <module name="mars-pay" options="-parameters" />
+      <module name="mars-push" options="-parameters" />
+      <module name="mars-redis" options="-parameters" />
+      <module name="mars-sms" options="-parameters" />
+      <module name="mars-social" options="-parameters" />
+      <module name="mars-starter" options="-parameters" />
+      <module name="mars-system" options="-parameters" />
+      <module name="mars-test" options="-parameters" />
+      <module name="mars-web" options="-parameters" />
+      <module name="mars-web-api" options="-parameters" />
+      <module name="mars-websocket" options="-parameters" />
+      <module name="mars-wechat" options="-parameters" />
+      <module name="mars-workflow" options="-parameters" />
+    </option>
+  </component>
+</project>

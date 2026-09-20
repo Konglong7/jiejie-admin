@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.jiejie</groupId>
+        <artifactId>jiejie-admin</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>jiejie-infra</artifactId>
+    <packaging>pom</packaging>
+    <name>Jiejie Infra</name>
+    <description>基础设施层</description>
+
+    <modules>
+        <module>jiejie-db</module>
+        <module>jiejie-redis</module>
+        <module>jiejie-oss</module>
+        <module>jiejie-websocket</module>
+        <module>jiejie-sms</module>
+        <module>jiejie-push</module>
+        <module>jiejie-pay</module>
+        <module>jiejie-wechat</module>
+        <module>jiejie-social</module>
+        <module>jiejie-crypto</module>
+        <module>jiejie-mail</module>
+    </modules>
+</project>

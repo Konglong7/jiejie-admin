@@ -1,0 +1,15 @@
+.git
+.idea
+.vscode
+*.iml
+target/
+**/target/
+node_modules/
+**/node_modules/
+unpackage/
+**/unpackage/
+mars-uniapp/
+logs/
+*.log
+uploads/
+.env*
