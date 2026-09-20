@@ -13,7 +13,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- 1. 清理测试与脏数据
 -- ----------------------------
 DELETE FROM `sys_dept` WHERE `id` >= 5;
-DELETE FROM `sys_post` WHERE `id` >= 7;
+DELETE FROM `sys_post` WHERE `id` >= 5;
+DELETE FROM `sys_role` WHERE `id` >= 3;
 DELETE FROM `sys_notice` WHERE `id` >= 1;
 DELETE FROM `sys_user_notice` WHERE `id` >= 1;
 DELETE FROM `student` WHERE `id` >= 1;
