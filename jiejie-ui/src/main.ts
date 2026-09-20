@@ -106,3 +106,10 @@ siteStore.loadConfig().then(() => {
 })
 
 app.mount('#app')
+
+// 注册 Service Worker 实现极速缓存与 0ms 二次呈现
+if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {})
+  })
+}

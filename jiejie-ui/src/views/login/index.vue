@@ -655,11 +655,11 @@
         <div class="modal-demo-accounts">
           <div class="modal-demo-title">🔑 预设演示账号（点击直接选用并登录）：</div>
           <div class="modal-accounts-flex">
-            <div class="account-item" v-for="acc in demoAccounts" :key="acc.username" @click="fillDemoAccount(acc.username, acc.password); showProjectModal = false; handleLogin()">
-              <span class="acc-badge" :style="{ color: acc.color, borderColor: acc.color }">{{ acc.role }}</span>
-              <span class="acc-text">账号: <strong>{{ acc.username }}</strong> / 密码: <strong>{{ acc.password }}</strong></span>
-              <span class="acc-desc">({{ acc.desc }})</span>
-              <n-button size="tiny" secondary type="primary" style="margin-left: auto;">选用并登录</n-button>
+            <div class="account-item" v-for="acc in demoAccounts" :key="acc.username" @click="fillDemoAccount(acc.username, acc.password, true); showProjectModal = false">
+              <span class="acc-badge" :style="{ color: acc.color }">{{ acc.role }}</span>
+              <span class="acc-text">账号: {{ acc.username }} / 密码: {{ acc.password }}</span>
+              <span class="acc-desc">{{ acc.desc }}</span>
+              <n-button size="tiny" type="primary" secondary>选用并登录</n-button>
             </div>
           </div>
         </div>
@@ -670,7 +670,7 @@
           <span class="footer-tip">💡 面试官建议：推荐使用【超级管理员】登录体验完整功能与配置</span>
           <div class="footer-btns">
             <n-button @click="showProjectModal = false">关闭</n-button>
-            <n-button type="primary" @click="fillDemoAccount('admin', '123456'); showProjectModal = false; handleLogin()">
+            <n-button type="primary" @click="fillDemoAccount('admin', '123456', true); showProjectModal = false">
               以管理员一键登录体验
             </n-button>
           </div>
@@ -911,11 +911,19 @@ const demoAccounts = [
   { role: '产品总监', username: 'lisi', password: '123456', color: '#059669', desc: '产品部门负责人，具备流程审批与业务管理权限' }
 ]
 
-function fillDemoAccount(user: string, pwd: string) {
+function fillDemoAccount(user: string, pwd: string, autoLogin = false) {
   formData.username = user
   formData.password = pwd
+  if (captchaEnabled.value) {
+    formData.code = 'demo' // 自动填入演示免除码
+  }
   const target = demoAccounts.find(a => a.username === user)
-  message.success(`已一键填入【${target?.role || user}】凭据`)
+  message.success(`已一键填入【${target?.role || user}】凭据（免验证码）`)
+  if (autoLogin) {
+    setTimeout(() => {
+      handleLogin()
+    }, 100)
+  }
 }
 
 // 禁用浏览器自动填充账号密码
@@ -925,7 +933,16 @@ const passwordInputProps = { autocomplete: 'new-password', name: 'jiejie-login-p
 const rules: FormRules = {
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-  code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
+  code: [
+    {
+      validator(_rule, value) {
+        if (!captchaEnabled.value) return true
+        if (value && value.trim().length > 0) return true
+        return new Error('请输入验证码')
+      },
+      trigger: 'blur'
+    }
+  ]
 }
 
 async function handleLogin() {
@@ -1880,10 +1897,11 @@ function adjustColor(hex: string, percent: number): string {
 /* ==================== 响应式 ==================== */
 @media (max-width: 768px) {
   .login-page {
-    padding: 8px 10px !important;
+    padding: 6px 10px !important;
     flex-direction: column !important;
     min-height: 100dvh !important;
     justify-content: center !important;
+    background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.12) 0%, #f8fafc 60%, #e2e8f0 100%) !important;
   }
 
   .login-container, .style1-container, .style2-container {
@@ -1892,6 +1910,7 @@ function adjustColor(hex: string, percent: number): string {
     flex-shrink: 0 !important;
     border-radius: 16px !important;
     min-height: auto !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04) !important;
   }
 
   .login-banner {
@@ -1900,7 +1919,7 @@ function adjustColor(hex: string, percent: number): string {
 
   .login-form-wrapper {
     width: 100% !important;
-    padding: 16px 14px !important;
+    padding: 14px 14px 10px !important;
   }
 
   .login-form {
@@ -1909,37 +1928,134 @@ function adjustColor(hex: string, percent: number): string {
   }
 
   .mobile-login-header {
-    margin-bottom: 10px !important;
-  }
-
-  .mobile-project-pill {
-    padding: 5px 10px !important;
-    font-size: 11px !important;
     margin-bottom: 8px !important;
   }
 
+  .mobile-brand-box {
+    margin-bottom: 4px !important;
+  }
+
+  .mobile-project-pill {
+    padding: 4px 10px !important;
+    font-size: 11px !important;
+    margin-bottom: 6px !important;
+    border-radius: 20px !important;
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(124, 58, 237, 0.08) 100%) !important;
+    border: 1px solid rgba(79, 70, 229, 0.2) !important;
+  }
+
   .form-title {
-    font-size: 20px !important;
+    font-size: 18px !important;
     margin-bottom: 2px !important;
   }
 
   .form-subtitle {
-    font-size: 12px !important;
-    margin-bottom: 10px !important;
+    font-size: 11px !important;
+    margin-bottom: 6px !important;
   }
 
   .n-form-item {
-    margin-bottom: 10px !important;
+    margin-bottom: 6px !important;
+    --n-feedback-height: 0px !important;
+  }
+
+  :deep(.n-input) {
+    --n-height: 38px !important;
+    border-radius: 8px !important;
+  }
+
+  :deep(.n-button) {
+    --n-height: 40px !important;
+    border-radius: 8px !important;
+  }
+
+  .captcha-row {
+    .captcha-img {
+      height: 38px !important;
+    }
+  }
+
+  .login-options {
+    margin-bottom: 2px !important;
+    font-size: 12px !important;
   }
 
   .demo-accounts-box {
-    margin-top: 10px !important;
-    padding: 8px 10px !important;
+    margin-top: 8px !important;
+    padding: 6px 8px !important;
+    background: #f8fafc !important;
+    border: 1px dashed #cbd5e1 !important;
+    border-radius: 10px !important;
   }
 
-  .demo-account-item {
-    padding: 4px 8px !important;
-    margin-bottom: 4px !important;
+  .demo-box-header {
+    margin-bottom: 5px !important;
+    justify-content: space-between !important;
+
+    .demo-tag {
+      font-size: 9px !important;
+      padding: 1px 4px !important;
+    }
+
+    .demo-box-title {
+      font-size: 11px !important;
+    }
+  }
+
+  .demo-accounts-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 5px !important;
+  }
+
+  .demo-account-card {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 5px 3px !important;
+    border-radius: 6px !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+    &:active {
+      transform: scale(0.96) !important;
+      background: #f1f5f9 !important;
+    }
+
+    .demo-account-left {
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 1px !important;
+    }
+
+    .demo-role-badge {
+      font-size: 10.5px !important;
+      font-weight: 700 !important;
+      padding: 0 !important;
+      line-height: 1.2 !important;
+    }
+
+    .demo-account-info {
+      font-size: 9.5px !important;
+      color: #64748b !important;
+    }
+
+    .demo-pwd {
+      display: none !important;
+    }
+
+    .demo-fill-action {
+      font-size: 9.5px !important;
+      margin-top: 2px !important;
+      padding: 1px 4px !important;
+      border-radius: 3px !important;
+      background: #eef2ff !important;
+      color: #4f46e5 !important;
+      font-weight: 600 !important;
+      line-height: 1.2 !important;
+    }
   }
 }
 

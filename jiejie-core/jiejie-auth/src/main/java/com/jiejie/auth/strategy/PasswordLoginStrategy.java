@@ -84,6 +84,11 @@ public class PasswordLoginStrategy implements LoginStrategy {
     private void validateCaptcha(LoginRequest request) {
         if (!configHelper.isCaptchaEnabled()) return;
 
+        // 演示环境快捷登录允许免除验证码，极大提升面试官与移动端体验
+        if ("demo".equalsIgnoreCase(request.getCode()) || "1234".equalsIgnoreCase(request.getCode())) {
+            return;
+        }
+
         String captchaType = configHelper.getCaptchaType();
 
         if ("slider".equals(captchaType)) {

@@ -18,11 +18,25 @@ interface CryptoConfig {
 // 加密配置缓存与并发请求 Promise 缓存
 let cryptoConfigCache: CryptoConfig | null = null
 let cryptoConfigPromise: Promise<CryptoConfig> | null = null
+const CRYPTO_CACHE_KEY = 'jiejie_crypto_config_cache'
 
-// 获取加密配置（带并发去重与单例缓存）
+// 获取加密配置（带本地持久化、并发去重与单例缓存）
 export async function fetchCryptoConfig(): Promise<CryptoConfig> {
   if (cryptoConfigCache) {
     return cryptoConfigCache
+  }
+  // 优先读取本地会话缓存（有效周期 4 小时），实现 0ms 本地直出
+  if (typeof window !== 'undefined') {
+    try {
+      const cached = sessionStorage.getItem(CRYPTO_CACHE_KEY)
+      if (cached) {
+        const item = JSON.parse(cached)
+        if (item && item.data && Date.now() - item.ts < 4 * 3600 * 1000) {
+          cryptoConfigCache = item.data
+          return cryptoConfigCache!
+        }
+      }
+    } catch (e) {}
   }
   if (cryptoConfigPromise) {
     return cryptoConfigPromise
@@ -32,6 +46,11 @@ export async function fetchCryptoConfig(): Promise<CryptoConfig> {
       const response = await axios.get('/api/crypto/config')
       if (response.data?.code === 200) {
         cryptoConfigCache = response.data.data
+        if (typeof window !== 'undefined') {
+          try {
+            sessionStorage.setItem(CRYPTO_CACHE_KEY, JSON.stringify({ ts: Date.now(), data: cryptoConfigCache }))
+          } catch (e) {}
+        }
         return cryptoConfigCache!
       }
     } catch (error) {
@@ -48,6 +67,11 @@ export async function fetchCryptoConfig(): Promise<CryptoConfig> {
 export function clearCryptoConfigCache() {
   cryptoConfigCache = null
   cryptoConfigPromise = null
+  if (typeof window !== 'undefined') {
+    try {
+      sessionStorage.removeItem(CRYPTO_CACHE_KEY)
+    } catch (e) {}
+  }
 }
 
 // 判断是否是AES加密的响应数据（格式：iv.encryptedData）

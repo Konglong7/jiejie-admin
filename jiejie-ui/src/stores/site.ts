@@ -68,4 +68,6 @@ export const useSiteStore = defineStore('site', () => {
     loaded,
     loadConfig
   }
+}, {
+  persist: true
 })
