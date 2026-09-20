@@ -19,6 +19,81 @@
       </div>
     </div>
 
+    <!-- 面试官 / HR 导览与项目解决痛点说明展板 -->
+    <n-card class="project-overview-card" :bordered="false" size="small">
+      <div class="overview-header">
+        <div class="overview-title-group">
+          <div class="overview-badge">PROJECT HIGHLIGHTS</div>
+          <h3 class="overview-title">🎯 项目定位与解决痛点说明（HR / 面试官参考）</h3>
+        </div>
+        <div class="overview-actions">
+          <n-button text type="primary" size="small" @click="toggleOverviewCollapse">
+            {{ overviewCollapsed ? '展开详细说明 ↓' : '收起详细说明 ↑' }}
+          </n-button>
+        </div>
+      </div>
+
+      <div class="overview-summary">
+        本项目是一套基于 <strong>Spring Boot 3.2</strong> 与 <strong>Vue 3.4</strong> 构建的企业级通用中后台全栈解决方案。旨在为企业信息化与 SaaS 系统提供一套<strong>高安全性、高扩展性、零重复造轮子</strong>的开箱即用工程底座，并在生产端实现<strong>极端微内存（512MB RAM）云原生环境下的长期稳定运行</strong>。
+      </div>
+
+      <n-collapse-transition :show="!overviewCollapsed">
+        <div class="problem-solution-grid">
+          <div class="problem-card">
+            <div class="problem-tag tag-orange">痛点 1 · 开发效率</div>
+            <div class="problem-title">重复编写 CRUD，基础模块割裂</div>
+            <div class="solution-content">
+              <strong>解决之道：</strong>开箱即用封装 12+ 企业级高频模块（组织架构、字典、配置、审计、定时任务等），内置基于 Velocity 的<strong>代码生成器</strong>，从数据表一键逆向生成前后端全套代码，缩减 70% 基础开发周期。
+            </div>
+            <div class="quick-link" @click="router.push('/tool/gen')">前往体验代码生成 →</div>
+          </div>
+
+          <div class="problem-card">
+            <div class="problem-tag tag-blue">痛点 2 · 权限管理</div>
+            <div class="problem-title">权限粗放、无动态路由与越权隐患</div>
+            <div class="solution-content">
+              <strong>解决之道：</strong>集成 <strong>Sa-Token</strong> 建立 5 级细粒度 RBAC 权限控制（用户-角色-岗位-部门-菜单/按钮），前端联动后端权限树<strong>动态注册与过滤路由</strong>，关键请求全局校验，支持 RSA 非对称加密防窃听。
+            </div>
+            <div class="quick-link" @click="router.push('/system/role')">前往查看角色权限体系 →</div>
+          </div>
+
+          <div class="problem-card">
+            <div class="problem-tag tag-green">痛点 3 · 业务协同</div>
+            <div class="problem-title">审批流程代码硬编码，变更改造成本高</div>
+            <div class="solution-content">
+              <strong>解决之道：</strong>深度融合国产高性能工作流 <strong>Warm-Flow</strong>，支持可视化流程定义绘制、多分支条件跳转、历史流转跟踪及办理/委托/转办，无缝支撑企业 OA 审批业务闭环。
+            </div>
+            <div class="quick-link" @click="router.push('/workflow/definition')">前往体验流程设计器 →</div>
+          </div>
+
+          <div class="problem-card">
+            <div class="problem-tag tag-purple">痛点 4 · 生产运维</div>
+            <div class="problem-title">云端轻量容器（512MB RAM）频繁 OOM 宕机</div>
+            <div class="solution-content">
+              <strong>解决之道：</strong>深入实施 <strong>JVM 堆内存精细化调优</strong>（-Xms128m -Xmx300m -XX:+UseSerialGC），搭配 TiDB Serverless 数据库与 Upstash Redis 缓存，结合 GitHub Actions + Cron-Job 双心跳机制，达成<strong>永久零成本 7×24h 常驻秒开</strong>。
+            </div>
+            <div class="quick-link" @click="router.push('/monitor/server')">前往查看服务器监控 →</div>
+          </div>
+        </div>
+
+        <div class="tech-stack-row">
+          <span class="tech-label">核心技术矩阵：</span>
+          <div class="tech-tags">
+            <n-tag size="small" type="primary" :bordered="false">Vue 3.4 + Vite 5</n-tag>
+            <n-tag size="small" type="primary" :bordered="false">Naive UI</n-tag>
+            <n-tag size="small" type="info" :bordered="false">Spring Boot 3.2</n-tag>
+            <n-tag size="small" type="info" :bordered="false">Sa-Token 权限体系</n-tag>
+            <n-tag size="small" type="success" :bordered="false">Warm-Flow 工作流</n-tag>
+            <n-tag size="small" type="success" :bordered="false">MyBatis-Plus</n-tag>
+            <n-tag size="small" type="warning" :bordered="false">TiDB Cloud (MySQL)</n-tag>
+            <n-tag size="small" type="warning" :bordered="false">Upstash Redis</n-tag>
+            <n-tag size="small" :bordered="false">Docker 512MB JVM 调优</n-tag>
+            <n-tag size="small" :bordered="false">Demo Mode 只读安全保护</n-tag>
+          </div>
+        </div>
+      </n-collapse-transition>
+    </n-card>
+
     <!-- 统计指标卡片 -->
     <div class="stat-grid">
       <div v-for="stat in stats" :key="stat.title" class="stat-card">
@@ -129,6 +204,11 @@ const userStore = useUserStore()
 const currentTime = ref('')
 const currentDate = ref('')
 const loading = ref(true)
+const overviewCollapsed = ref(false)
+
+function toggleOverviewCollapse() {
+  overviewCollapsed.value = !overviewCollapsed.value
+}
 
 const trendChartRef = ref<HTMLElement | null>(null)
 const trendChart = useECharts(trendChartRef)
@@ -479,5 +559,198 @@ body.dark-theme .shortcut-title {
 
 body.dark-theme .changelog-list {
   color: #9CA3AF;
+}
+
+/* ==================== 项目定位与解决痛点导览展板 ==================== */
+.project-overview-card {
+  margin-bottom: 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.04) 0%, rgba(99, 102, 241, 0.08) 100%);
+  border: 1px solid rgba(79, 70, 229, 0.18) !important;
+}
+
+body.dark-theme .project-overview-card {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(30, 27, 75, 0.4) 100%);
+  border-color: rgba(99, 102, 241, 0.3) !important;
+}
+
+.overview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.overview-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.overview-badge {
+  background: #4F46E5;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.overview-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+body.dark-theme .overview-title {
+  color: #f3f4f6;
+}
+
+.overview-summary {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #4B5563;
+  margin-bottom: 14px;
+}
+
+body.dark-theme .overview-summary {
+  color: #d1d5db;
+}
+
+.problem-solution-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 1200px) {
+  .problem-solution-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .problem-solution-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.problem-card {
+  background: #ffffff;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #E5E7EB;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s;
+}
+
+body.dark-theme .problem-card {
+  background: #18181c;
+  border-color: #3f3f46;
+}
+
+.problem-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.problem-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  width: fit-content;
+  margin-bottom: 8px;
+
+  &.tag-orange {
+    background: #FEF3C7;
+    color: #D97706;
+  }
+  &.tag-blue {
+    background: #DBEAFE;
+    color: #2563EB;
+  }
+  &.tag-green {
+    background: #D1FAE5;
+    color: #059669;
+  }
+  &.tag-purple {
+    background: #EDE9FE;
+    color: #7C3AED;
+  }
+}
+
+body.dark-theme .problem-tag {
+  opacity: 0.9;
+}
+
+.problem-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: 6px;
+}
+
+body.dark-theme .problem-title {
+  color: #f3f4f6;
+}
+
+.solution-content {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #6B7280;
+  flex: 1;
+  margin-bottom: 8px;
+}
+
+body.dark-theme .solution-content {
+  color: #9CA3AF;
+}
+
+.quick-link {
+  font-size: 12px;
+  color: #4F46E5;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #4338CA;
+    text-decoration: underline;
+  }
+}
+
+body.dark-theme .quick-link {
+  color: #818CF8;
+}
+
+.tech-stack-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(79, 70, 229, 0.15);
+}
+
+.tech-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #4B5563;
+}
+
+body.dark-theme .tech-label {
+  color: #9CA3AF;
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 </style>

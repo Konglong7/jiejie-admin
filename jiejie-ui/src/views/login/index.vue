@@ -29,18 +29,28 @@
             <h1 class="banner-title">{{ siteDescription || '后台管理系统' }}</h1>
             <p class="banner-desc">打造一款现代化后台管理平台</p>
             <div class="banner-features">
-              <div class="feature-item">
+              <div class="feature-item" @click="showProjectModal = true" style="cursor: pointer;" title="点击查看项目解析与解法">
                 <div class="feature-dot"></div>
-                <span>RBAC权限管理</span>
+                <span>⚡ 逆向代码生成 · 研发提效 70%</span>
               </div>
-              <div class="feature-item">
+              <div class="feature-item" @click="showProjectModal = true" style="cursor: pointer;" title="点击查看项目解析与解法">
                 <div class="feature-dot"></div>
-                <span>高效开发体验</span>
+                <span>🛡️ Sa-Token 5级细粒度权限控制</span>
               </div>
-              <div class="feature-item">
+              <div class="feature-item" @click="showProjectModal = true" style="cursor: pointer;" title="点击查看项目解析与解法">
                 <div class="feature-dot"></div>
-                <span>精美界面设计</span>
+                <span>🔄 Warm-Flow 轻量国产工作流</span>
               </div>
+              <div class="feature-item" @click="showProjectModal = true" style="cursor: pointer;" title="点击查看项目解析与解法">
+                <div class="feature-dot"></div>
+                <span>🚀 512MB 容器极度调优与保活</span>
+              </div>
+            </div>
+            <div class="banner-project-action">
+              <n-button round size="small" strong secondary type="info" @click="showProjectModal = true">
+                <template #icon><n-icon :component="InformationCircleOutline" /></template>
+                💡 项目定位与解决痛点深度解析
+              </n-button>
             </div>
           </div>
           <div class="banner-decoration">
@@ -101,7 +111,11 @@
             <div class="demo-accounts-box">
               <div class="demo-box-header">
                 <div class="demo-tag">DEMO</div>
-                <span class="demo-box-title">演示账号（点击一键填入凭据）</span>
+                <span class="demo-box-title">演示账号（点击一键填入）</span>
+                <n-button text type="primary" size="tiny" class="demo-header-intro-btn" @click="showProjectModal = true">
+                  <template #icon><n-icon :component="InformationCircleOutline" /></template>
+                  <span>项目解析</span>
+                </n-button>
               </div>
               <div class="demo-accounts-grid">
                 <div
@@ -144,18 +158,28 @@
             <h1 class="banner-title">{{ siteDescription || '后台管理系统' }}</h1>
             <p class="banner-desc">打造一款现代化后台管理平台</p>
             <div class="banner-features">
-              <div class="feature-item">
+              <div class="feature-item" @click="showProjectModal = true" style="cursor: pointer;" title="点击查看项目解析与解法">
                 <div class="feature-dot"></div>
-                <span>RBAC权限管理</span>
+                <span>⚡ 逆向代码生成 · 研发提效 70%</span>
               </div>
-              <div class="feature-item">
+              <div class="feature-item" @click="showProjectModal = true" style="cursor: pointer;" title="点击查看项目解析与解法">
                 <div class="feature-dot"></div>
-                <span>高效开发体验</span>
+                <span>🛡️ Sa-Token 5级细粒度权限控制</span>
               </div>
-              <div class="feature-item">
+              <div class="feature-item" @click="showProjectModal = true" style="cursor: pointer;" title="点击查看项目解析与解法">
                 <div class="feature-dot"></div>
-                <span>精美界面设计</span>
+                <span>🔄 Warm-Flow 轻量国产工作流</span>
               </div>
+              <div class="feature-item" @click="showProjectModal = true" style="cursor: pointer;" title="点击查看项目解析与解法">
+                <div class="feature-dot"></div>
+                <span>🚀 512MB 容器极度调优与保活</span>
+              </div>
+            </div>
+            <div class="banner-project-action">
+              <n-button round size="small" strong secondary type="info" @click="showProjectModal = true">
+                <template #icon><n-icon :component="InformationCircleOutline" /></template>
+                💡 项目定位与解决痛点深度解析
+              </n-button>
             </div>
           </div>
           <div class="banner-decoration">
@@ -216,7 +240,11 @@
             <div class="demo-accounts-box">
               <div class="demo-box-header">
                 <div class="demo-tag">DEMO</div>
-                <span class="demo-box-title">演示账号（点击一键填入凭据）</span>
+                <span class="demo-box-title">演示账号（点击一键填入）</span>
+                <n-button text type="primary" size="tiny" class="demo-header-intro-btn" @click="showProjectModal = true">
+                  <template #icon><n-icon :component="InformationCircleOutline" /></template>
+                  <span>项目解析</span>
+                </n-button>
               </div>
               <div class="demo-accounts-grid">
                 <div
@@ -331,7 +359,11 @@
             <div class="demo-accounts-box">
               <div class="demo-box-header">
                 <div class="demo-tag">DEMO</div>
-                <span class="demo-box-title">演示账号（点击一键填入凭据）</span>
+                <span class="demo-box-title">演示账号（点击一键填入）</span>
+                <n-button text type="primary" size="tiny" class="demo-header-intro-btn" @click="showProjectModal = true">
+                  <template #icon><n-icon :component="InformationCircleOutline" /></template>
+                  <span>项目解析</span>
+                </n-button>
               </div>
               <div class="demo-accounts-grid">
                 <div
@@ -415,6 +447,185 @@
         </div>
       </div>
     </n-modal>
+
+    <!-- 项目定位与解决痛点解析弹窗 (供HR / 面试官参考) -->
+    <n-modal
+      v-model:show="showProjectModal"
+      preset="card"
+      title="🎯 Jiejie Admin 项目架构与解决痛点深度解析"
+      class="project-intro-modal"
+      style="width: 880px; max-width: 95vw; max-height: 90vh; overflow-y: auto; border-radius: 12px;"
+      :segmented="{ content: 'soft', footer: 'soft' }"
+    >
+      <template #header-extra>
+        <n-tag type="info" size="small" round :bordered="false">Demo 演示指引</n-tag>
+      </template>
+
+      <div class="project-modal-body">
+        <!-- 概览标语 -->
+        <div class="project-overview-hero">
+          <div class="hero-badge">项目核心价值</div>
+          <p class="hero-desc">
+            本项目是一套面向企业级敏捷交付的全栈中后台管理平台。针对中小型研发团队在系统建设中面临的
+            <strong>“研发周期长、权限控制粗放、审批流硬编码、低配云资源极易 OOM”</strong> 四大典型工程痛点，
+            提供开箱即用、安全完备、轻量高可用的全链路解决方案。
+          </p>
+        </div>
+
+        <!-- 四大核心痛点与解法 -->
+        <div class="painpoints-grid">
+          <!-- 痛点 1 -->
+          <div class="painpoint-card">
+            <div class="card-header">
+              <div class="card-icon-wrap icon-flash">⚡</div>
+              <div class="card-title-wrap">
+                <span class="card-badge">痛点一 · 研发效能</span>
+                <h4>CRUD 重复造轮子，业务开发耗时耗力</h4>
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="pain-problem">
+                <span class="label">传统痛点：</span>
+                手写基础增删改查、实体模型与前后端契约接口耗费大量人力，规范不一且容易产生低级缺陷。
+              </div>
+              <div class="pain-solution">
+                <span class="label">本工程解法：</span>
+                集成基于 Velocity 模板引擎的代码逆向生成中心，一键生成 Controller/Service/Mapper/Entity 及 Vue3+Naive UI 前端视图；内置 12+ 常用系统管理模块，业务脚手架开箱即用，研发提效 70% 以上。
+              </div>
+              <div class="card-tags">
+                <span class="tech-pill">Velocity 引擎</span>
+                <span class="tech-pill">一键逆向工程</span>
+                <span class="tech-pill">12+ 内置模块</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 痛点 2 -->
+          <div class="painpoint-card">
+            <div class="card-header">
+              <div class="card-icon-wrap icon-shield">🛡️</div>
+              <div class="card-title-wrap">
+                <span class="card-badge">痛点二 · 安全架构</span>
+                <h4>权限粗放割裂、越权漏洞与鉴权性能瓶颈</h4>
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="pain-problem">
+                <span class="label">传统痛点：</span>
+                传统 Spring Security / Shiro 配置繁杂臃肿；按钮级与多维度数据范围隔离实现复杂；明文传输存在安全隐患。
+              </div>
+              <div class="pain-solution">
+                <span class="label">本工程解法：</span>
+                基于 Sa-Token 构建 5 级细粒度权限模型（认证、角色、按钮、数据权限、防重复提交）；前端结合动态路由与自定义指令；登录采用 RSA 非对称加密，支持多账号单点/踢人下线，毫秒级权限校验。
+              </div>
+              <div class="card-tags">
+                <span class="tech-pill">Sa-Token RBAC</span>
+                <span class="tech-pill">RSA 传输加密</span>
+                <span class="tech-pill">动态路由树</span>
+                <span class="tech-pill">防重放攻击</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 痛点 3 -->
+          <div class="painpoint-card">
+            <div class="card-header">
+              <div class="card-icon-wrap icon-flow">🔄</div>
+              <div class="card-title-wrap">
+                <span class="card-badge">痛点三 · 流程编排</span>
+                <h4>业务审批流代码硬编码，维护变更成本高</h4>
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="pain-problem">
+                <span class="label">传统痛点：</span>
+                业务流转需求频繁变动（请假、报销、工单等），代码硬编码状态机极难扩展；Activiti/Flowable 等引擎过重（几百张表、内存膨胀）。
+              </div>
+              <div class="pain-solution">
+                <span class="label">本工程解法：</span>
+                无缝集成国产轻量级 Warm-Flow 工作流引擎，仅十余张核心表，轻量极速；支持无代码可视化流程定义、多级审批、会签驳回与状态监听，大幅降低企业协同流转复杂度。
+              </div>
+              <div class="card-tags">
+                <span class="tech-pill">Warm-Flow 引擎</span>
+                <span class="tech-pill">轻量化表设计</span>
+                <span class="tech-pill">可视化流程编排</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 痛点 4 -->
+          <div class="painpoint-card">
+            <div class="card-header">
+              <div class="card-icon-wrap icon-server">🚀</div>
+              <div class="card-title-wrap">
+                <span class="card-badge">痛点四 · 生产成本</span>
+                <h4>512MB 容器极度受限下的高可用云部署</h4>
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="pain-problem">
+                <span class="label">传统痛点：</span>
+                Spring Boot 单体或微服务打包镜像大、默认启动内存即超 1GB，在低配免费云容器（512MB RAM）中频繁 OOM 退出，免费实例冷启动休眠。
+              </div>
+              <div class="pain-solution">
+                <span class="label">本工程解法：</span>
+                深度 JVM 容器调优（-Xms128m -Xmx300m -XX:+UseSerialGC），配合 TiDB Serverless 弹性数据库与 Upstash 远程 Redis，再由 Cron-Job 定时心跳保活，实现公网零服务器成本 7×24h 稳定秒开。
+              </div>
+              <div class="card-tags">
+                <span class="tech-pill">JVM 堆内存调优</span>
+                <span class="tech-pill">TiDB Serverless</span>
+                <span class="tech-pill">Upstash Redis</span>
+                <span class="tech-pill">7×24h 保活</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 技术栈全景矩阵 -->
+        <div class="tech-matrix-box">
+          <div class="matrix-title">💻 技术栈全景矩阵</div>
+          <div class="matrix-grid">
+            <div class="matrix-col">
+              <div class="matrix-label">后端核心架构</div>
+              <div class="matrix-text">Spring Boot 3.4 + Java 17 + MyBatis-Plus + Sa-Token + Warm-Flow + Dynamic Datasource</div>
+            </div>
+            <div class="matrix-col">
+              <div class="matrix-label">前端现代化交互</div>
+              <div class="matrix-text">Vue 3.4 + Vite 5 + TypeScript + Naive UI + Pinia + Vue Router + ECharts 5</div>
+            </div>
+            <div class="matrix-col">
+              <div class="matrix-label">云原生与基础设施</div>
+              <div class="matrix-text">Docker Multi-Stage + TiDB Serverless (MySQL 8.0) + Upstash Redis + Render Cloud</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 演示账号速查 -->
+        <div class="modal-demo-accounts">
+          <div class="modal-demo-title">🔑 预设演示账号（点击直接选用并登录）：</div>
+          <div class="modal-accounts-flex">
+            <div class="account-item" v-for="acc in demoAccounts" :key="acc.username" @click="fillDemoAccount(acc.username, acc.password); showProjectModal = false; handleLogin()">
+              <span class="acc-badge" :style="{ color: acc.color, borderColor: acc.color }">{{ acc.role }}</span>
+              <span class="acc-text">账号: <strong>{{ acc.username }}</strong> / 密码: <strong>{{ acc.password }}</strong></span>
+              <span class="acc-desc">({{ acc.desc }})</span>
+              <n-button size="tiny" secondary type="primary" style="margin-left: auto;">选用并登录</n-button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <template #footer>
+        <div class="project-modal-footer">
+          <span class="footer-tip">💡 面试官建议：推荐使用【超级管理员】登录体验完整功能与配置</span>
+          <div class="footer-btns">
+            <n-button @click="showProjectModal = false">关闭</n-button>
+            <n-button type="primary" @click="fillDemoAccount('admin', '123456'); showProjectModal = false; handleLogin()">
+              以管理员一键登录体验
+            </n-button>
+          </div>
+        </div>
+      </template>
+    </n-modal>
   </div>
 </template>
 
@@ -422,7 +633,7 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useMessage, type FormInst, type FormRules } from 'naive-ui'
-import { PersonOutline, LockClosedOutline, GridOutline, AppsOutline, ImageOutline, RefreshOutline, CloseOutline, ArrowForwardOutline, CheckmarkOutline } from '@vicons/ionicons5'
+import { PersonOutline, LockClosedOutline, GridOutline, AppsOutline, ImageOutline, RefreshOutline, CloseOutline, ArrowForwardOutline, CheckmarkOutline, InformationCircleOutline, SparklesOutline } from '@vicons/ionicons5'
 import { useUserStore } from '@/stores/user'
 import { useSiteStore } from '@/stores/site'
 import { useThemeStore } from '@/stores/theme'
@@ -441,6 +652,9 @@ const siteName = computed(() => siteStore.siteName || 'Jiejie Admin')
 const siteDescription = computed(() => siteStore.siteDescription || '现代化后台管理系统')
 const siteLogo = computed(() => siteStore.siteLogo)
 const copyright = computed(() => siteStore.copyright || '版权所有 © Jiejie Admin 2026')
+
+// 项目定位与痛点解析弹窗
+const showProjectModal = ref(false)
 
 // 登录配置
 const captchaEnabled = ref(false)
@@ -1611,4 +1825,288 @@ function adjustColor(hex: string, percent: number): string {
   }
 }
 
+.banner-project-action {
+  margin-top: 18px;
+}
+
+.demo-box-header {
+  .demo-header-intro-btn {
+    margin-left: auto;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+  }
+}
+</style>
+
+<style lang="scss">
+/* 项目定位与解决痛点弹窗 (全局挂载适配) */
+.project-intro-modal {
+  .n-card-header__main {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .project-overview-hero {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(59, 130, 246, 0.05) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #4F46E5;
+      background: rgba(79, 70, 229, 0.12);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-desc {
+      font-size: 13.5px;
+      color: #374151;
+      line-height: 1.6;
+      margin: 0;
+
+      strong {
+        color: #1F2937;
+      }
+    }
+  }
+
+  .painpoints-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 18px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .painpoint-card {
+    background: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.25s ease;
+
+    &:hover {
+      border-color: #6366F1;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.09);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+
+      .card-icon-wrap {
+        width: 34px;
+        height: 34px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+        background: #EEF2FF;
+      }
+
+      .card-title-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        .card-badge {
+          font-size: 11px;
+          font-weight: 600;
+          color: #6366F1;
+        }
+
+        h4 {
+          margin: 0;
+          font-size: 13.5px;
+          font-weight: 600;
+          color: #111827;
+          line-height: 1.4;
+        }
+      }
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12.5px;
+      line-height: 1.5;
+
+      .pain-problem {
+        color: #6B7280;
+        background: #F3F4F6;
+        padding: 6px 10px;
+        border-radius: 4px;
+
+        .label {
+          font-weight: 600;
+          color: #DC2626;
+        }
+      }
+
+      .pain-solution {
+        color: #374151;
+
+        .label {
+          font-weight: 600;
+          color: #059669;
+        }
+      }
+
+      .card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 4px;
+
+        .tech-pill {
+          font-size: 11px;
+          color: #4338CA;
+          background: #EEF2FF;
+          padding: 2px 6px;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+
+  .tech-matrix-box {
+    background: #F9FAFB;
+    border: 1px dashed #D1D5DB;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+
+    .matrix-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+      }
+
+      .matrix-col {
+        .matrix-label {
+          font-size: 11px;
+          font-weight: 600;
+          color: #6B7280;
+          margin-bottom: 3px;
+        }
+
+        .matrix-text {
+          font-size: 12px;
+          color: #1F2937;
+          line-height: 1.4;
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+      }
+    }
+  }
+
+  .modal-demo-accounts {
+    margin-top: 4px;
+
+    .modal-demo-title {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #4B5563;
+      margin-bottom: 8px;
+    }
+
+    .modal-accounts-flex {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      .account-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 12px;
+        background: #F3F4F6;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+          background: #E5E7EB;
+        }
+
+        .acc-badge {
+          font-size: 11px;
+          font-weight: 600;
+          padding: 1px 6px;
+          border-radius: 3px;
+          border: 1px solid currentColor;
+          min-width: 60px;
+          text-align: center;
+        }
+
+        .acc-text {
+          font-size: 12px;
+          color: #374151;
+          font-family: ui-monospace, monospace;
+        }
+
+        .acc-desc {
+          font-size: 11px;
+          color: #6B7280;
+        }
+      }
+    }
+  }
+
+  .project-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    @media (max-width: 640px) {
+      flex-direction: column;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .footer-tip {
+      font-size: 12px;
+      color: #6B7280;
+    }
+
+    .footer-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+  }
+}
 </style>
