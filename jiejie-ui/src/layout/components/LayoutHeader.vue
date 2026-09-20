@@ -5,8 +5,16 @@
     :class="[`theme-${themeStore.mode}`, { 'header-primary': themeStore.headerUsePrimaryColor }]"
     :style="headerStyle"
   >
+    <!-- 移动端汉堡菜单按钮 + 网站简标 -->
+    <div v-if="isMobile" class="header-mobile-left">
+      <div class="header-icon" @click="$emit('toggleMobileMenu')" title="展开菜单">
+        <n-icon size="22"><MenuOutline /></n-icon>
+      </div>
+      <span class="mobile-logo-title">{{ siteName }}</span>
+    </div>
+
     <!-- 顶部菜单模式下的Logo -->
-    <div v-if="themeStore.siderPosition === 'top'" class="header-logo">
+    <div v-else-if="themeStore.siderPosition === 'top'" class="header-logo">
       <img v-if="siteLogo" :src="siteLogo" class="logo-img" alt="Logo" />
       <div
         v-else
@@ -22,7 +30,7 @@
     </div>
 
     <!-- 顶部菜单模式下的菜单 -->
-    <div v-if="themeStore.siderPosition === 'top'" class="header-menu">
+    <div v-else-if="themeStore.siderPosition === 'top'" class="header-menu">
       <n-menu
         mode="horizontal"
         :options="menuOptions"
@@ -42,11 +50,11 @@
 
     <!-- 顶栏右侧功能区 -->
     <div class="header-right">
-      <!-- 菜单搜索 -->
-      <MenuSearch :menu-options="menuOptions" />
+      <!-- 菜单搜索 (移动端隐藏) -->
+      <MenuSearch v-if="!isMobile" :menu-options="menuOptions" />
 
-      <!-- 全屏切换 -->
-      <div class="header-icon" @click="toggleFullscreen" :title="isFullscreen ? '退出全屏' : '全屏'">
+      <!-- 全屏切换 (移动端隐藏) -->
+      <div v-if="!isMobile" class="header-icon" @click="toggleFullscreen" :title="isFullscreen ? '退出全屏' : '全屏'">
         <n-icon size="20">
           <ContractOutline v-if="isFullscreen" />
           <ExpandOutline v-else />
@@ -161,6 +169,7 @@ import {
   type DropdownOption
 } from 'naive-ui'
 import {
+  MenuOutline,
   ExpandOutline,
   ContractOutline,
   NotificationsOutline,
@@ -178,6 +187,7 @@ import MenuSearch from './MenuSearch.vue'
 import ThemeDrawer from './ThemeDrawer.vue'
 
 defineProps<{
+  isMobile?: boolean
   menuOptions: MenuOption[]
   activeMenu: string
   breadcrumbs: Array<{ path: string; title: string }>
@@ -185,6 +195,7 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: 'menuClick', key: string): void
+  (e: 'toggleMobileMenu'): void
   (e: 'openProfile'): void
   (e: 'openPassword'): void
 }>()
@@ -447,6 +458,34 @@ onUnmounted(() => {
   background: #FFFFFF;
   border-bottom: 1px solid #e8e8e8;
   transition: background-color 0.3s;
+
+  @media (max-width: 768px) {
+    padding: 0 10px;
+
+    .header-right {
+      gap: 4px;
+    }
+
+    .user-name {
+      display: none;
+    }
+  }
+}
+
+.header-mobile-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .mobile-logo-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+  }
+}
+
+body.dark-theme .header-mobile-left .mobile-logo-title {
+  color: #fff;
 }
 
 body.dark-theme .layout-header {

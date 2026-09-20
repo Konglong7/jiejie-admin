@@ -1,1 +1,0 @@
-import{_ as e}from"./index-CQak-FQ4.js";import{W as r,X as t}from"./vue-vendor-CpRhX2tN.js";import"./naive-ui-DsuYbzYM.js";const o={};function c(n,s){return r(),t("div",null,"this is page")}const f=e(o,[["render",c]]);export{f as default};

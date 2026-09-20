@@ -111,16 +111,16 @@
     </div>
 
     <!-- 图表与快捷入口区域 -->
-    <n-grid :x-gap="16" :y-gap="16" :cols="12" class="section-grid">
-      <!-- 访问趋势图表 (8 列) -->
-      <n-gi :span="8">
+    <n-grid :x-gap="16" :y-gap="16" :cols="24" responsive="screen" class="section-grid">
+      <!-- 访问趋势图表 (移动端 24 列满宽，桌面端 16 列) -->
+      <n-gi :span="24" :m="16">
         <n-card title="近 7 日系统活跃与访问趋势" class="chart-card">
           <div ref="trendChartRef" style="height: 320px; width: 100%"></div>
         </n-card>
       </n-gi>
 
-      <!-- 快捷入口 (4 列) -->
-      <n-gi :span="4">
+      <!-- 快捷入口 (移动端 24 列满宽，桌面端 8 列) -->
+      <n-gi :span="24" :m="8">
         <n-card title="常用功能导航" class="shortcuts-card">
           <div class="shortcuts-grid">
             <div
@@ -142,11 +142,11 @@
     </n-grid>
 
     <!-- 底部区域：系统环境 + 版本动态 -->
-    <n-grid :x-gap="16" :y-gap="16" :cols="12" class="section-grid" style="margin-top: 16px">
+    <n-grid :x-gap="16" :y-gap="16" :cols="24" responsive="screen" class="section-grid" style="margin-top: 16px">
       <!-- 系统环境 -->
-      <n-gi :span="6">
+      <n-gi :span="24" :m="12">
         <n-card title="系统环境概览">
-          <n-descriptions :column="2" label-placement="left">
+          <n-descriptions :column="isMobile ? 1 : 2" label-placement="left">
             <n-descriptions-item label="系统名称">Jiejie Admin</n-descriptions-item>
             <n-descriptions-item label="系统版本">v1.3.0</n-descriptions-item>
             <n-descriptions-item label="前端技术">Vue 3.4 + Vite + Naive UI</n-descriptions-item>
@@ -158,7 +158,7 @@
       </n-gi>
 
       <!-- 版本更新记录 -->
-      <n-gi :span="6">
+      <n-gi :span="24" :m="12">
         <n-card title="更新动态">
           <n-timeline>
             <n-timeline-item
@@ -205,6 +205,11 @@ const currentTime = ref('')
 const currentDate = ref('')
 const loading = ref(true)
 const overviewCollapsed = ref(false)
+const isMobile = ref(false)
+
+function checkMobile() {
+  isMobile.value = window.innerWidth <= 768
+}
 
 function toggleOverviewCollapse() {
   overviewCollapsed.value = !overviewCollapsed.value
@@ -355,6 +360,8 @@ function updateTime() {
 
 let timer: number
 onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
   updateTime()
   timer = window.setInterval(updateTime, 1000)
   loadStats()
@@ -362,6 +369,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
   clearInterval(timer)
 })
 </script>
@@ -752,5 +760,61 @@ body.dark-theme .tech-label {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+}
+
+@media (max-width: 768px) {
+  .welcome-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+
+    .welcome-right {
+      width: 100%;
+      .time-box {
+        text-align: left;
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        .time-val {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .stat-card {
+    padding: 12px 14px;
+    gap: 10px;
+    .stat-icon-wrapper {
+      width: 40px;
+      height: 40px;
+    }
+    .stat-num {
+      font-size: 20px;
+    }
+  }
+
+  .shortcuts-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .overview-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 </style>

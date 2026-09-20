@@ -625,3 +625,54 @@ body.dark-theme {
   transform: translateX(20px);
   opacity: 0;
 }
+
+// ==================== 移动端全局适配 (微信 / 手机屏幕) ====================
+@media (max-width: 768px) {
+  // 数据表格横向平滑触控滚动，防止在微信内列被压扁
+  .n-data-table {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    width: 100% !important;
+
+    .n-data-table-table {
+      min-width: 600px;
+    }
+  }
+
+  // 搜索栏和工具栏在移动端自动垂直流式排布
+  .search-form {
+    .n-form {
+      flex-direction: column !important;
+      align-items: stretch !important;
+
+      .n-form-item {
+        margin-bottom: 8px !important;
+        width: 100% !important;
+      }
+    }
+  }
+
+  .table-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px;
+
+    .table-toolbar-left,
+    .table-toolbar-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  }
+
+  // 页面容器内边距精简，提升手机端信息展示密度
+  .page-container {
+    padding: 10px !important;
+  }
+
+  // 弹窗在手机端宽度自适应
+  .n-modal:not(.n-modal--fullscreen) {
+    max-width: 95vw !important;
+    margin: 10px auto !important;
+  }
+}

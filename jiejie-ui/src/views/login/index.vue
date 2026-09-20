@@ -811,6 +811,21 @@ onMounted(() => {
     siteStore.loadConfig()
   }
   loadPublicConfig()
+
+  // 需求 1：将「项目解析」设置为快速弹出
+  // 首次进入登录页时，延迟 300ms 快速自动弹出，让面试官/HR 第一眼即可直观了解系统架构与核心攻坚点
+  // 采用 sessionStorage 记录，关闭后同一会话不再骚扰弹窗，用户也可随时点击「项目解析」手动打开
+  try {
+    const hasPopped = sessionStorage.getItem('jiejie_project_modal_popped')
+    if (!hasPopped) {
+      setTimeout(() => {
+        showProjectModal.value = true
+        sessionStorage.setItem('jiejie_project_modal_popped', 'true')
+      }, 300)
+    }
+  } catch (e) {
+    showProjectModal.value = true
+  }
 })
 
 // 样式选项
@@ -952,6 +967,14 @@ function adjustColor(hex: string, percent: number): string {
   justify-content: center;
   position: relative;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    height: auto;
+    min-height: 100vh;
+    align-items: flex-start;
+    overflow-y: auto;
+    padding: 12px;
+  }
 }
 
 .style-switcher {
@@ -966,6 +989,12 @@ function adjustColor(hex: string, percent: number): string {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
+
+  @media (max-width: 768px) {
+    top: 10px;
+    right: 10px;
+    padding: 4px;
+  }
 }
 
 .style-option {
@@ -1025,6 +1054,13 @@ function adjustColor(hex: string, percent: number): string {
   border-radius: 24px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    min-height: auto;
+    border-radius: 16px;
+    margin: 40px auto 20px auto;
+  }
 }
 
 .login-banner {
@@ -1036,6 +1072,44 @@ function adjustColor(hex: string, percent: number): string {
   justify-content: center;
   position: relative;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 24px 20px;
+    flex: none;
+
+    .banner-logo {
+      margin-bottom: 16px;
+      .logo-icon, .logo-img {
+        width: 38px;
+        height: 38px;
+        font-size: 20px;
+      }
+      .logo-text {
+        font-size: 20px;
+      }
+    }
+
+    .banner-title {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .banner-desc {
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .banner-features {
+      gap: 10px;
+      .feature-item {
+        font-size: 13px;
+      }
+    }
+
+    .banner-project-action {
+      margin-top: 14px;
+    }
+  }
 }
 
 .banner-content {
@@ -1161,11 +1235,19 @@ function adjustColor(hex: string, percent: number): string {
   align-items: center;
   justify-content: center;
   padding: 32px;
+
+  @media (max-width: 768px) {
+    padding: 24px 18px;
+  }
 }
 
 .login-form {
   width: 100%;
   max-width: 320px;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 }
 
 .form-title {
@@ -1502,17 +1584,19 @@ function adjustColor(hex: string, percent: number): string {
   .style2-container {
     flex-direction: column;
     overflow-y: auto;
+    position: relative !important;
+    min-height: 100vh !important;
   }
 
   .style2-container .login-banner {
     flex: none;
-    min-height: 300px;
-    padding: 40px 24px;
+    min-height: auto;
+    padding: 32px 20px;
   }
 
   .style2-container .login-form-wrapper {
     flex: 1;
-    padding: 40px 24px;
+    padding: 32px 20px;
   }
 }
 
@@ -1546,6 +1630,16 @@ function adjustColor(hex: string, percent: number): string {
   color: rgba(255, 255, 255, 0.6);
   font-size: 13px;
   z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .style1-footer,
+  .style2-footer,
+  .style3-footer {
+    position: static;
+    margin-top: 16px;
+    padding-bottom: 20px;
+  }
 }
 
 /* ==================== 样式三：毛玻璃 ==================== */
@@ -1844,6 +1938,39 @@ function adjustColor(hex: string, percent: number): string {
 <style lang="scss">
 /* 项目定位与解决痛点弹窗 (全局挂载适配) */
 .project-intro-modal {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+  @media (max-width: 768px) {
+    width: 95vw !important;
+    max-height: 88vh !important;
+    margin: 10px auto !important;
+
+    .n-card-header {
+      padding: 12px 14px !important;
+      .n-card-header__main {
+        font-size: 14px !important;
+      }
+    }
+
+    .project-modal-body {
+      padding: 0 4px;
+    }
+
+    .project-overview-hero {
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      .hero-desc {
+        font-size: 12px;
+      }
+    }
+
+    .modal-accounts-flex .account-item {
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 8px 10px;
+    }
+  }
+
   .n-card-header__main {
     font-size: 16px;
     font-weight: 700;

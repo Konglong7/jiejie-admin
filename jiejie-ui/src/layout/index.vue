@@ -1,12 +1,12 @@
 <template>
   <n-layout
-    :has-sider="themeStore.siderPosition !== 'top'"
+    :has-sider="themeStore.siderPosition !== 'top' && !isMobile"
     class="layout"
-    :class="themeStore.siderPosition === 'top' ? 'layout-top' : ''"
+    :class="themeStore.siderPosition === 'top' && !isMobile ? 'layout-top' : ''"
   >
-    <!-- 侧边栏（左侧/右侧模式） -->
+    <!-- 侧边栏（左侧/右侧模式，移动端自动隐藏并使用抽屉） -->
     <LayoutSider
-      v-if="themeStore.siderPosition !== 'top'"
+      v-if="themeStore.siderPosition !== 'top' && !isMobile"
       v-model:collapsed="collapsed"
       :menu-options="menuOptions"
       :active-menu="activeMenu"
@@ -17,16 +17,18 @@
     <n-layout>
       <!-- 顶部导航 -->
       <LayoutHeader
+        :is-mobile="isMobile"
         :menu-options="menuOptions"
         :active-menu="activeMenu"
         :breadcrumbs="breadcrumbs"
+        @toggle-mobile-menu="showMobileDrawer = !showMobileDrawer"
         @menu-click="handleMenuClick"
         @open-profile="showProfileModal = true"
         @open-password="showPasswordModal = true"
       />
 
-      <!-- 页签栏 -->
-      <TabBar v-if="themeStore.showTabs" />
+      <!-- 页签栏 (PC端展示，移动端隐藏提升内容区域) -->
+      <TabBar v-if="themeStore.showTabs && !isMobile" />
 
       <!-- 内容区 -->
       <n-layout-content class="layout-content">
@@ -37,6 +39,24 @@
         </router-view>
       </n-layout-content>
     </n-layout>
+
+    <!-- 移动端侧边抽屉菜单 (通过顶栏汉堡按钮呼出) -->
+    <n-drawer v-model:show="showMobileDrawer" placement="left" :width="260">
+      <n-drawer-content :body-content-style="{ padding: 0 }">
+        <div class="mobile-drawer-header">
+          <div class="mobile-drawer-logo">
+            <img v-if="siteLogo" :src="siteLogo" class="logo-img" alt="Logo" />
+            <div v-else class="logo-icon">{{ siteName.charAt(0) }}</div>
+            <span class="logo-text">{{ siteName }}</span>
+          </div>
+        </div>
+        <n-menu
+          :options="menuOptions"
+          :value="activeMenu"
+          @update:value="handleMobileMenuClick"
+        />
+      </n-drawer-content>
+    </n-drawer>
 
     <!-- 个人信息弹窗 -->
     <ProfileModal v-model:show="showProfileModal" />
@@ -50,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, h } from 'vue'
+import { ref, computed, h, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { NIcon, type MenuOption } from 'naive-ui'
 import {
@@ -80,6 +100,7 @@ import {
 } from '@vicons/ionicons5'
 import { useUserStore } from '@/stores/user'
 import { useThemeStore } from '@/stores/theme'
+import { useSiteStore } from '@/stores/site'
 import ProfileModal from '@/components/ProfileModal.vue'
 import PasswordModal from '@/components/PasswordModal.vue'
 import MessageNotification from '@/components/MessageNotification.vue'
@@ -92,10 +113,36 @@ const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 const themeStore = useThemeStore()
+const siteStore = useSiteStore()
+
+const siteName = computed(() => siteStore.siteName || 'Jiejie Admin')
+const siteLogo = computed(() => siteStore.siteLogo)
 
 const collapsed = ref(false)
 const showProfileModal = ref(false)
 const showPasswordModal = ref(false)
+
+// 移动端响应式与抽屉状态
+const isMobile = ref(false)
+const showMobileDrawer = ref(false)
+
+function checkMobile() {
+  isMobile.value = window.innerWidth <= 768
+}
+
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
+})
+
+function handleMobileMenuClick(key: string) {
+  showMobileDrawer.value = false
+  handleMenuClick(key)
+}
 
 // 图标字典
 const iconMap: Record<string, any> = {
@@ -230,5 +277,59 @@ body.dark-theme .layout-content {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.mobile-drawer-header {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+body.dark-theme .mobile-drawer-header {
+  border-bottom-color: #3f3f46;
+}
+
+.mobile-drawer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .logo-img {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    object-fit: contain;
+  }
+
+  .logo-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: #4f46e5;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .logo-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+  }
+}
+
+body.dark-theme .mobile-drawer-logo .logo-text {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .layout-content {
+    padding: 10px;
+  }
 }
 </style>
