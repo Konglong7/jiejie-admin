@@ -1,1 +1,0 @@
-import{eo as e}from"./index-Cvbyd0mf.js";import{K as o,L as r}from"./vue-vendor-KGIHlRP3.js";const t={};function c(n,s){return o(),r("div",null,"this is page")}const _=e(t,[["render",c]]);export{_ as default};

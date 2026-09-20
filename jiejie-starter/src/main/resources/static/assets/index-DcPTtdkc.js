@@ -1,0 +1,1 @@
+import{j as r,d as s,M as n,a3 as c,a6 as p,L as u}from"./vue-vendor-CP69822o.js";const m=r({__name:"index",setup(_){const a=c(),o=p();return s(()=>{const{params:e}=a,t="/"+(Array.isArray(e.path)?e.path.join("/"):e.path);o.replace(t)}),(e,t)=>(u(),n("div"))}});export{m as default};

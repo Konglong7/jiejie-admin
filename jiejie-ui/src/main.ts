@@ -19,7 +19,8 @@ import {
   NDrawer,
   NDrawerContent,
   NCard,
-  NAlert
+  NAlert,
+  NTooltip
 } from 'naive-ui'
 import App from './App.vue'
 import router from './router'
@@ -54,7 +55,8 @@ const initialNaive = create({
     NDrawer,
     NDrawerContent,
     NCard,
-    NAlert
+    NAlert,
+    NTooltip
   ]
 })
 app.use(initialNaive)
@@ -72,10 +74,21 @@ export const ensureFullNaive = () => {
 }
 
 if (typeof window !== 'undefined') {
-  const scheduleIdle = (window as any).requestIdleCallback || window.setTimeout
-  scheduleIdle(() => {
-    ensureFullNaive()
-  }, 1000)
+  try {
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(() => {
+        ensureFullNaive()
+      }, { timeout: 2000 })
+    } else {
+      setTimeout(() => {
+        ensureFullNaive()
+      }, 1000)
+    }
+  } catch (e) {
+    setTimeout(() => {
+      ensureFullNaive()
+    }, 1000)
+  }
 }
 
 // 预加载加密配置
