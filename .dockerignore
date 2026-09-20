@@ -13,3 +13,4 @@ logs/
 *.log
 uploads/
 .env*
+.github/
