@@ -7,7 +7,9 @@
     <!-- 品牌图标 / PWA -->
     <link rel="icon" type="image/svg+xml" href="/logo.svg"/>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
-    <link rel="manifest" href="/manifest.webmanifest"/>
+    <!-- 使用 .json 后缀：Tomcat 默认未注册 .webmanifest 的 MIME 类型，
+         会被当作 application/octet-stream 返回，Chrome 将直接拒绝解析 PWA 清单 -->
+    <link rel="manifest" href="/manifest.json"/>
     <meta name="theme-color" content="#4F46E5"/>
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Jiejie Admin">
