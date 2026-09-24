@@ -1,0 +1,51 @@
+name: Keep Scheduled Workflows Enabled
+
+# 为什么需要这个文件：
+# GitHub 会在仓库「连续 60 天没有任何提交」时，自动禁用全部 schedule 触发的工作流。
+# 一旦 keepalive.yml 被禁用，Render 实例就会重新开始休眠，演示站退回冷启动体验。
+#
+# 本工作流每月检查一次提交活跃度，仅在仓库确实长期空闲时补交一次空提交，
+# 以此重置那 60 天的计时器。若你本人近期有正常提交，它不会产生任何多余记录。
+
+on:
+  schedule:
+    # 每月 1 日 03:17 UTC（避开整点的 Actions 调度高峰）
+    - cron: '17 3 1 * *'
+  workflow_dispatch:
+
+# 需要写权限才能推送空提交
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-activity-keepalive
+  cancel-in-progress: false
+
+jobs:
+  keep-active:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 仓库长期空闲时补一次提交
+        run: |
+          set -u
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          LAST_TS=$(git log -1 --format=%ct)
+          NOW_TS=$(date +%s)
+          IDLE_DAYS=$(( (NOW_TS - LAST_TS) / 86400 ))
+
+          echo "距上次提交：${IDLE_DAYS} 天（阈值 30 天，GitHub 禁用线 60 天）"
+
+          if [ "$IDLE_DAYS" -lt 30 ]; then
+            echo "仓库近期有提交，schedule 工作流不会被动禁用，本次无需干预。"
+            exit 0
+          fi
+
+          git commit --allow-empty -m "chore(ci): 维持仓库活跃度，避免 schedule 工作流被 GitHub 自动禁用"
+          git push
+          echo "已补交一次空提交，活跃度计时器重置为 0 天。"

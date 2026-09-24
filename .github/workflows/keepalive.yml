@@ -1,22 +1,62 @@
 name: Render KeepAlive Heartbeat
 
+# 目的：让 Render 免费实例始终保持唤醒，避免访客首次打开时等待 30~60 秒冷启动。
+#
+# 为什么是 10 分钟：Render 免费层在「15 分钟无入站流量」后挂起容器。
+# GitHub 的 schedule 触发在高峰期经常延迟 5~15 分钟，取 12 分钟会贴边，
+# 一旦延迟就整轮落空，因此留出余量取 10 分钟。
+#
+# 注意：本工作流属于 schedule 触发，GitHub 会在仓库连续 60 天无提交后自动禁用，
+# 由同目录下的 keepalive-activity.yml 负责维持仓库活跃度。
+
 on:
   schedule:
-    # 每 12 分钟发送一次心跳请求（Render 15 分钟无请求休眠）
-    - cron: '*/12 * * * *'
+    - cron: '*/10 * * * *'
   workflow_dispatch:
+
+# 上游延迟时避免多轮心跳堆叠
+concurrency:
+  group: render-keepalive
+  cancel-in-progress: false
 
 jobs:
   heartbeat:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - name: Ping Jiejie Admin Render Service
+      - name: 唤醒并探测 Render 实例
         run: |
-          echo "Sending keepalive ping to Render at $(date)..."
-          STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" -m 30 "https://jiejie-admin.onrender.com" || echo "000")
-          echo "Render response status: $STATUS_CODE"
-          if [ "$STATUS_CODE" -ge 200 ] && [ "$STATUS_CODE" -lt 400 ]; then
-            echo "Render service is awake and healthy!"
+          set -u
+          BASE="https://jiejie-admin.onrender.com"
+
+          # 关键：静态资源可能被 Cloudflare 直接命中缓存而不回源，
+          # 因此必须同时打一个必然穿透到应用的 API，才能真正重置 Render 的休眠计时。
+          TARGETS="$BASE/ $BASE/api/system/config/public"
+
+          FAILED=0
+          echo "===== $(date -u '+%F %T UTC') 心跳开始 ====="
+
+          for target in $TARGETS; do
+            echo "--- $target"
+            ok=0
+            for attempt in 1 2 3; do
+              out=$(curl -s -o /dev/null -w '%{http_code}|%{time_total}' -m 60 "$target" 2>/dev/null || true)
+              code="${out%%|*}"
+              took="${out##*|}"
+              [ -z "$code" ] && code="000"
+              echo "    第 ${attempt} 次 -> HTTP ${code}，耗时 ${took}s"
+              # 冷启动时首次请求会挂住，最终只要能拿到任意响应即说明实例已被唤醒
+              if [ "$code" != "000" ]; then ok=1; break; fi
+              sleep 15
+            done
+            [ "$ok" = "1" ] || FAILED=1
+          done
+
+          echo "===== 心跳结束 ====="
+          if [ "$FAILED" = "1" ]; then
+            echo "::warning::心跳未收到任何有效响应，实例可能正在冷启动或 Render 侧异常"
           else
-            echo "Service returned $STATUS_CODE, ping sent to wake it up."
+            echo "实例存活，休眠计时已重置。"
           fi
+          # 保活是尽力而为，不让工作流变红产生噪音告警
+          exit 0

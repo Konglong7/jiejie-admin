@@ -174,40 +174,60 @@ git push -u origin main
 
 ## 六、7×24 小时常驻秒开保活体系（防休眠）
 
-> **休眠原理**：Render Free 套餐在无网络流量访问 15 分钟后，会自动挂起容器以节省云端算力；下一次访客访问时需要重新拉起容器，冷启动需约 40~50 秒。通过配置定时心跳请求，可让服务永远处于活跃状态。
+> **休眠原理**：Render Free 套餐在无入站网络流量 15 分钟后会自动挂起容器；下一次访客访问需要重新拉起容器，冷启动约 40~50 秒。
+> **设计思路**：仓库内自动心跳（已集成，零维护）为主，外部独立心跳（需你注册免费账号）为兜底。
 
-### 双保险方案：
+### 1. 第一层：GitHub Actions 云端心跳（已集成，推送后自动生效）
 
-### 1. 第一重：GitHub Actions 云端定时心跳（已集成）
-项目已内置 [`.github/workflows/keepalive.yml`](./.github/workflows/keepalive.yml)：
-```yaml
-name: Render KeepAlive Heartbeat
+[`.github/workflows/keepalive.yml`](./.github/workflows/keepalive.yml) 每 **10 分钟**探测一次。
 
-on:
-  schedule:
-    # 每 12 分钟执行一次轻量探测
-    - cron: '*/12 * * * *'
-  workflow_dispatch:
+取 10 分钟而不是贴着 15 分钟，是因为 GitHub 的 schedule 触发在高峰期经常延迟 5~15 分钟，取值太贴边会导致整轮落空。该工作流还处理了两个容易被忽略的细节：
 
-jobs:
-  heartbeat:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Ping Jiejie Admin Render Service
-        run: |
-          curl -s -o /dev/null -w "%{http_code}" -m 30 "https://jiejie-admin.onrender.com" || true
-```
-只要代码在 GitHub 仓库中，GitHub 云端 Runner 就会自动定时向你的服务发送轻量探测请求。
+- **同时探测首页与 API**：静态资源可能被 Cloudflare 直接命中缓存而不回源，只打首页未必能重置容器休眠计时，因此额外打一个必然穿透到应用的接口。
+- **失败自动重试 2 次**：冷启动时首个请求会挂住，单次超时不代表服务不可用。
 
-### 2. 第二重：Cron-Job.org 外部高精度心跳（双重保险）
-1. 登录 [Cron-Job.org 控制台](https://console.cron-job.org/jobs)。
-2. 点击 **CREATE CRONJOB**：
-   - **Title**：`Jiejie-Admin-KeepAlive`
-   - **URL**：`https://jiejie-admin.onrender.com`
-   - **Schedule**：选择 **Every 10 minutes**（`*/10 * * * *`）
-   - **Enable job**：勾选
-3. 点击 **CREATE** 保存，即可实现外部精准心跳巡检。
+### 2. 防止心跳被 GitHub 自动关闭（已集成，推送后自动生效）
 
+GitHub 会在仓库「连续 60 天没有任何提交」时**自动禁用全部 schedule 触发的工作流**。一旦心跳被禁用，实例就会重新开始休眠——这是一条很容易被忽略、但迟早会触发的失效路径。
+
+[`.github/workflows/keepalive-activity.yml`](./.github/workflows/keepalive-activity.yml) 每月 1 日检查提交活跃度：若仓库已空闲超过 30 天，就补交一次空提交以重置这 60 天计时器；若你本人近期有正常提交，则不做任何额外操作。
+
+> 以上两层都固化在仓库里，不需要服务器、不需要账号、也不需要日常维护。
+
+### 3. 第二层：外部独立心跳（推荐配置，需手动操作约 2 分钟）
+
+GitHub Actions 的定时任务是**尽力而为**：高峰期可能延迟几十分钟甚至整轮跳过，而且它和被守护的服务处在同一平台，平台侧出问题时会一起失效。因此建议再加一个外部心跳兜底：
+
+1. 登录 [Cron-Job.org 控制台](https://console.cron-job.org/jobs)（免费注册）
+2. 点击 **CREATE CRONJOB**，按下表填写：
+
+   | 字段 | 值 |
+   | :--- | :--- |
+   | Title | `Jiejie-Admin-KeepAlive` |
+   | URL | `https://jiejie-admin.onrender.com/api/system/config/public` |
+   | Schedule | **Every 10 minutes**（`*/10 * * * *`） |
+   | Enable job | 勾选 |
+
+3. 点击 **CREATE** 保存。列表页会显示每次执行的状态码，可据此确认是否生效。
+
+> URL 刻意使用 API 而非首页：首页可能被 CDN 缓存命中，API 请求必然回源，才能真正唤醒实例。
+
+### 4. 访客停留期间的自我保活（已集成）
+
+真实的冷启动往往发生在「人还在页面上」的时候：HR 打开登录页后先去处理别的事，20 分钟后回来点登录——此时实例已经休眠。
+
+前端已在页面可见时每 5 分钟回源一次，并在从后台标签页切回来的瞬间立即回源，让实例提前开始唤醒。相关代码见 `jiejie-ui/src/main.ts` 末尾的 HEARTBEAT 段。
+
+### 5. 这套方案的边界
+
+上述措施让「有流量时」始终保持秒开，但**如果整条保活链路同时断裂**（GitHub 长时间故障 + Cron-Job.org 停止服务），冷启动仍会发生。届时的表现是访客看到分阶段的唤醒进度提示，而不是一个卡死的白屏——这是当前零成本方案能做到的上限。
+
+若要彻底消除冷启动，只能改变运行方式：
+
+| 方案 | 成本 | 说明 |
+| :--- | :--- | :--- |
+| 升级 Render 付费实例 | 约 $7/月起 | 容器常驻，无需任何保活配置 |
+| 迁移到不会休眠的容器平台 | 免费但需重建 | 如 Oracle Cloud Always Free，需重新搭建部署链路 |
 ---
 
 ## 七、简历呈现与面试答辩亮点

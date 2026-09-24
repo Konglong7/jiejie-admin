@@ -115,3 +115,25 @@ if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(() => {})
   })
 }
+
+// 访客停留期间保持云端实例唤醒
+// Render 免费实例 15 分钟无入站请求即休眠。HR 打开页面后若先去处理别的事，
+// 回来点「登录」就会撞上 30~60 秒冷启动；页面可见时定时回源一次可避免这种情况。
+if (typeof window !== 'undefined') {
+  const HEARTBEAT_URL = '/api/system/config/public'
+  const HEARTBEAT_INTERVAL = 5 * 60 * 1000
+
+  const heartbeat = () => {
+    // 用原生 fetch 而非 axios 实例：绕开响应拦截器（该接口未登录时会返回 401）
+    fetch(HEARTBEAT_URL, { method: 'GET', cache: 'no-store', credentials: 'omit' }).catch(() => {})
+  }
+
+  setInterval(() => {
+    if (document.visibilityState === 'visible') heartbeat()
+  }, HEARTBEAT_INTERVAL)
+
+  // 从后台标签页切回来的瞬间就回源一次，让实例提前开始唤醒
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') heartbeat()
+  })
+}
