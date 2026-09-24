@@ -1,11 +1,12 @@
 // Jiejie Admin 高性能 Service Worker 缓存层
-const CACHE_NAME = 'jiejie-cache-v1'
+const CACHE_NAME = 'jiejie-cache-v2'
 
 // 核心预缓存列表
 const PRECACHE_URLS = [
   '/',
   '/index.html',
-  '/vite.svg'
+  '/logo.svg',
+  '/manifest.webmanifest'
 ]
 
 self.addEventListener('install', (event) => {

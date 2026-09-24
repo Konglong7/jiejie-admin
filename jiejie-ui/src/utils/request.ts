@@ -147,7 +147,8 @@ async function decryptResponseData(data: string): Promise<any> {
 // 后端 API 统一使用 /api 前缀
 const service: AxiosInstance = axios.create({
   baseURL: '/api',
-  timeout: 30000
+  // 云端免费实例休眠后冷启动需 40~50 秒，超时窗口必须长于冷启动，否则首访请求必然超时
+  timeout: 60000
 })
 
 // 请求拦截器
@@ -211,7 +212,16 @@ service.interceptors.response.use(
     return res.data
   },
   (error) => {
-    const message = error.response?.data?.message || error.message || '网络错误'
+    const status = error.response?.status
+    const isTimeout = error.code === 'ECONNABORTED' || /timeout/i.test(error.message || '')
+    let message = error.response?.data?.message || error.message || '网络错误'
+    // 冷启动期间抛出的 axios 英文原文对访客不可读，统一替换为可操作的引导文案
+    if (isTimeout || !error.response) {
+      message = '服务正在唤醒，网络响应较慢，请稍等几秒后重试'
+    } else if (status === 502 || status === 503 || status === 504) {
+      message = '云端实例正在启动中，请稍等片刻再试一次'
+    }
+    console.warn('[request]', error.config?.url, error.code || status, error.message)
     window.$message?.error(message)
     return Promise.reject(error)
   }

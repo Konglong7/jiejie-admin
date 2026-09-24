@@ -29,15 +29,11 @@ spring:
       test-on-borrow: false
       test-on-return: false
       validation-query: SELECT 1
+      # 线上为公开演示站：关闭 Druid 监控台与 Web 统计，避免 /druid/* 对外暴露
       stat-view-servlet:
-        enabled: true
-        url-pattern: /druid/*
-        login-username: admin
-        login-password: admin123
+        enabled: false
       web-stat-filter:
-        enabled: true
-        url-pattern: /*
-        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+        enabled: false
       filter:
         stat:
           enabled: true

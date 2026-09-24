@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /$
+Allow: /login
+Allow: /assets/
+
+Disallow: /api/
+Disallow: /druid/
+Disallow: /uploads/

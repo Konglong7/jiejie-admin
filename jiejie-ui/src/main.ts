@@ -106,6 +106,8 @@ siteStore.loadConfig().then(() => {
 })
 
 app.mount('#app')
+// 首屏渲染完成，通知 index.html 的冷启动加载动画停止计时
+;(window as any).__jjBootDone?.()
 
 // 注册 Service Worker 实现极速缓存与 0ms 二次呈现
 if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {

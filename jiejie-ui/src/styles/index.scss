@@ -854,4 +854,29 @@ body.dark-theme {
     width: 92vw !important;
     max-width: 340px !important;
   }
+
+  // 10. iOS 聚焦防缩放：index.html 已放开 user-scalable，输入控件字号必须 >= 16px，
+  //     否则 iOS Safari 会在聚焦时自动放大整个页面
+  .n-input .n-input__input-el,
+  .n-input .n-input__textarea-el,
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+
+}
+
+/* ==================== 刘海屏 / Home 指示条安全区适配 ==================== */
+/* index.html 已开启 viewport-fit=cover，此处消费安全区变量，避免内容被系统手势条遮挡 */
+@supports (padding: env(safe-area-inset-bottom)) {
+  @media (max-width: 768px) {
+    .layout-content {
+      padding-bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+    }
+  }
+
+  .n-drawer .n-drawer-body-content-wrapper {
+    padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;
+  }
 }

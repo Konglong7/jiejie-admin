@@ -2,21 +2,92 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8"/>
-    <link rel="icon" type="image/svg+xml" href="/vite.svg"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+
+    <!-- 品牌图标 / PWA -->
+    <link rel="icon" type="image/svg+xml" href="/logo.svg"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+    <link rel="manifest" href="/manifest.webmanifest"/>
+    <meta name="theme-color" content="#4F46E5"/>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Jiejie Admin">
     <meta name="referrer" content="no-referrer">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
-    <link rel="preconnect" href="https://jiejie-admin.onrender.com" crossorigin>
-    <link rel="dns-prefetch" href="https://jiejie-admin.onrender.com">
+
     <title>Jiejie Admin - 通用管理系统</title>
+    <meta name="description" content="Jiejie Admin —— 基于 Spring Boot 3 + Vue 3 的企业级通用后台管理系统。在线演示覆盖 RBAC 细粒度权限、代码逆向生成、工作流审批、WebSocket 即时通讯与服务器监控，演示账号 admin / 123456 一键登录。">
+    <meta name="keywords" content="后台管理系统,Spring Boot,Vue3,Naive UI,RBAC,代码生成器,工作流,在线演示,Java,全栈">
+    <meta name="author" content="Konglong7">
+    <link rel="canonical" href="https://jiejie-admin.onrender.com/">
+
+    <!-- 社交分享卡片（微信 / 钉钉 / Slack / LinkedIn / Twitter 等） -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Jiejie Admin">
+    <meta property="og:title" content="Jiejie Admin - 企业级通用后台管理系统（在线演示）">
+    <meta property="og:description" content="Spring Boot 3 + Vue 3 全栈后台管理系统，内置 RBAC 权限、代码生成器、工作流审批、即时通讯与服务监控。演示账号 admin / 123456，点击即可在线体验。">
+    <meta property="og:url" content="https://jiejie-admin.onrender.com/">
+    <meta property="og:image" content="https://jiejie-admin.onrender.com/og-cover.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Jiejie Admin - 企业级通用后台管理系统（在线演示）">
+    <meta name="twitter:description" content="Spring Boot 3 + Vue 3 全栈后台管理系统，演示账号 admin / 123456。">
+    <meta name="twitter:image" content="https://jiejie-admin.onrender.com/og-cover.jpg">
 </head>
 <body>
 <div id="app">
-  <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; z-index: 9999;">
-    <div style="width: 42px; height: 42px; border: 3px solid #e2e8f0; border-top-color: #4f46e5; border-radius: 50%; animation: jiejie-spin 0.8s linear infinite;"></div>
-    <div style="margin-top: 16px; font-size: 15px; font-weight: 600; color: #1e293b; letter-spacing: 0.5px;">Jiejie Admin</div>
-    <div style="margin-top: 6px; font-size: 12px; color: #64748b;">系统极速加载中...</div>
-    <style>@keyframes jiejie-spin{to{transform:rotate(360deg)}}</style>
+  <div class="jj-boot">
+    <div class="jj-boot-spinner"></div>
+    <div class="jj-boot-brand">Jiejie Admin</div>
+    <div class="jj-boot-msg" id="jj-boot-msg">正在加载界面…</div>
+    <div class="jj-boot-bar"><span class="jj-boot-bar-fill" id="jj-boot-bar"></span></div>
+    <div class="jj-boot-hint" id="jj-boot-hint"></div>
+    <button class="jj-boot-retry" id="jj-boot-retry" type="button" style="display:none" onclick="location.reload()">重新加载</button>
   </div>
+  <style>
+    .jj-boot{position:fixed;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,sans-serif;z-index:9999}
+    .jj-boot-spinner{width:42px;height:42px;border:3px solid #e2e8f0;border-top-color:#4F46E5;border-radius:50%;animation:jj-spin .8s linear infinite}
+    .jj-boot-brand{margin-top:16px;font-size:15px;font-weight:600;color:#1e293b;letter-spacing:.5px}
+    .jj-boot-msg{margin-top:8px;font-size:13px;color:#475569;text-align:center;transition:opacity .3s}
+    .jj-boot-bar{margin-top:14px;width:180px;max-width:60vw;height:4px;border-radius:999px;background:#e2e8f0;overflow:hidden}
+    .jj-boot-bar-fill{display:block;height:100%;width:18%;border-radius:999px;background:linear-gradient(90deg,#6366F1,#7C3AED);transition:width .8s ease}
+    .jj-boot-hint{margin-top:12px;max-width:320px;font-size:12px;line-height:1.7;color:#94a3b8;text-align:center}
+    .jj-boot-retry{margin-top:18px;padding:9px 22px;font-size:13px;font-family:inherit;color:#fff;background:#4F46E5;border:0;border-radius:8px;cursor:pointer}
+    .jj-boot-retry:active{background:#4338CA}
+    @keyframes jj-spin{to{transform:rotate(360deg)}}
+  </style>
+  <script>
+    (function () {
+      // 冷启动分阶段提示：Render 免费实例休眠后需 30~60 秒唤醒，避免访客误判为"网站已挂"
+      var t0 = Date.now();
+      var msgEl = document.getElementById('jj-boot-msg');
+      var hintEl = document.getElementById('jj-boot-hint');
+      var barEl = document.getElementById('jj-boot-bar');
+      var retryEl = document.getElementById('jj-boot-retry');
+      var stages = [
+        { at: 0, msg: '正在加载界面…', hint: '', bar: '18%' },
+        { at: 4000, msg: '正在唤醒云端演示实例…', hint: '免费实例休眠后需要 30~60 秒冷启动，请稍候', bar: '42%' },
+        { at: 20000, msg: '马上就好，请不要关闭页面', hint: '首次访问偏慢属于正常现象，唤醒后再次访问即为秒开', bar: '68%' },
+        { at: 45000, msg: '仍在连接服务器…', hint: '网络较慢或实例正在重启。可以先收藏本页，稍后再来', bar: '88%' }
+      ];
+      function apply() {
+        var el = Date.now() - t0;
+        for (var i = stages.length - 1; i >= 0; i--) {
+          if (el >= stages[i].at) {
+            var s = stages[i];
+            if (msgEl.textContent !== s.msg) { msgEl.textContent = s.msg; }
+            hintEl.textContent = s.hint;
+            barEl.style.width = s.bar;
+            if (s.at >= 45000) { retryEl.style.display = 'inline-block'; }
+            return;
+          }
+        }
+      }
+      apply();
+      var timer = setInterval(apply, 1000);
+      window.__jjBootDone = function () { clearInterval(timer); };
+    })();
+  </script>
 </div>
 <script type="module" src="/src/main.ts"></script>
 </body>
